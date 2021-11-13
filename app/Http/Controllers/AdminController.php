@@ -31,10 +31,12 @@ class AdminController extends Controller
 
         $result = DB::table('tbl_admin')->where('admin_email',$admin_email)->where('admin_password',$admin_password)->first(); // truy vấn  Kiểm tra email, password từ batabase ('bảng tble_admin') -> 1 giá trị
         if($result){
+
             Session::put('admin_name', $result->admin_name);
             Session::put('admin_avarta', $result->admin_avarta);
             Session::put('admin_id', $result->admin_id);
             return Redirect::to('/dashboard');
+            
         } else {
             Session::put('message_box', 'Email hoặc mật khẩu chưa đúng. Vui lòng kiểm tra lại!');
             return Redirect::to('/administrator');

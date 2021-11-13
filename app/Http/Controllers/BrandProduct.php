@@ -13,7 +13,48 @@ session_start(); // khi có sử dụng sesstion phải khai báo
 
 class BrandProduct extends Controller
 {
-    public function index() 
+    public function index()
     {
+        // $all_brand = DB::table('tbl_category_product')->get();
+        // $manager_brand = view('administrator.category-product')->with('list_category_product',$all_brand);
+
+       // return view('admin-layout')->with('administrator.tag-brand',$manager_brand); 
+        return view('administrator.tag-brand'); 
+    }
+
+    public function Add_Country()
+    {
+        // $all_brand = DB::table('tbl_category_product')->get();
+        // $manager_brand = view('administrator.category-product')->with('list_category_product',$all_brand);
+
+       // return view('admin-layout')->with('administrator.tag-brand',$manager_brand); 
+        return view('administrator.tag-brand'); 
+    }
+
+    public function Add_Brand()
+    {
+        // $all_brand = DB::table('tbl_category_product')->get();
+        // $manager_brand = view('administrator.category-product')->with('list_category_product',$all_brand);
+
+       // return view('admin-layout')->with('administrator.tag-brand',$manager_brand); 
+        return view('administrator.tag-brand'); 
+    }
+
+    public function Edit_Country()
+    {
+        // $all_brand = DB::table('tbl_category_product')->get();
+        // $manager_brand = view('administrator.category-product')->with('list_category_product',$all_brand);
+
+       // return view('admin-layout')->with('administrator.tag-brand',$manager_brand); 
+        return view('administrator.tag-brand'); 
+    }
+
+    public function Edit_Brand()
+    {
+        // $all_brand = DB::table('tbl_category_product')->get();
+        // $manager_brand = view('administrator.category-product')->with('list_category_product',$all_brand);
+
+       // return view('admin-layout')->with('administrator.tag-brand',$manager_brand); 
+        return view('administrator.tag-brand'); 
     }
 }

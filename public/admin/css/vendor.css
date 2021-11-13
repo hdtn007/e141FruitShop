@@ -128,9 +128,130 @@ input:checked + .slider:after
 {  
   content:'Hiện';
   color: #FFFFFF;
- transform: translate(-50%,-50%);
- top: 50%;
- left: 35%;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 35%;
 }
 
 /*--------- END --------*/
+
+
+/*
+██████╗ ██████╗  ██████╗ ██████╗ ██╗   ██╗ ██████╗████████╗
+██╔══██╗██╔══██╗██╔═══██╗██╔══██╗██║   ██║██╔════╝╚══██╔══╝
+██████╔╝██████╔╝██║   ██║██║  ██║██║   ██║██║        ██║   
+██╔═══╝ ██╔══██╗██║   ██║██║  ██║██║   ██║██║        ██║   
+██║     ██║  ██║╚██████╔╝██████╔╝╚██████╔╝╚██████╗   ██║   
+╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝  ╚═════╝  ╚═════╝   ╚═╝   
+                                                           
+*/
+
+.breadcrumb-custom2 ul{
+  margin-left: 0.5rem;
+  border-left: 2px solid #000000;
+}
+
+.breadcrumb-custom2 ul li{
+  margin-left: -1.6rem;
+  color: #000000;
+}
+
+.breadcrumb-custom2 ul li a{
+  color: #000000;
+}
+
+.breadcrumb-custom2 ul li.active a{
+  text-decoration: underline;
+}
+
+.detail-product .img-product-container img{
+  max-width: 100%;
+  padding: 2px;
+}
+
+.detail-product .img-product-container .img-product-thumbs img{
+  border: 1px dotted #000;
+  padding: 2px;
+  cursor: pointer;
+}
+.info-detail-product{
+  max-width: 350px;
+}
+.info-detail-product .name-product{
+  word-wrap: break-word;
+}
+
+.info-detail-product .info-items{
+  word-wrap: break-word;
+}
+
+.info-detail-product .info-items img{
+  image-rendering: auto;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+
+
+
+
+/*
+██████╗ ██████╗ ███████╗ █████╗ ██████╗  ██████╗██████╗ ██╗   ██╗███╗   ███╗██████╗ 
+██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝██╔══██╗██║   ██║████╗ ████║██╔══██╗
+██████╔╝██████╔╝█████╗  ███████║██║  ██║██║     ██████╔╝██║   ██║██╔████╔██║██████╔╝
+██╔══██╗██╔══██╗██╔══╝  ██╔══██║██║  ██║██║     ██╔══██╗██║   ██║██║╚██╔╝██║██╔══██╗
+██████╔╝██║  ██║███████╗██║  ██║██████╔╝╚██████╗██║  ██║╚██████╔╝██║ ╚═╝ ██║██████╔╝
+╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═════╝ 
+
+*/
+
+.breadcrumb, .breadcrumb-custom{
+  background: none;
+  list-style:none;
+  /*overflow: hidden;*/
+}
+
+.breadcrumb-custom .breadcrumb-item{
+}
+
+/* content item */
+ .breadcrumb-item+.breadcrumb-item::before {
+     display: inline-block;
+     padding-right: 0.5rem;
+     color: #6c757d;
+     content: ">"
+ }
+
+
+ /*
+
+███████╗ ██████╗██████╗  ██████╗ ██╗     ██╗     ██████╗  █████╗ ██████╗     
+██╔════╝██╔════╝██╔══██╗██╔═══██╗██║     ██║     ██╔══██╗██╔══██╗██╔══██╗    
+███████╗██║     ██████╔╝██║   ██║██║     ██║     ██████╔╝███████║██████╔╝    
+╚════██║██║     ██╔══██╗██║   ██║██║     ██║     ██╔══██╗██╔══██║██╔══██╗    
+███████║╚██████╗██║  ██║╚██████╔╝███████╗███████╗██████╔╝██║  ██║██║  ██║    
+╚══════╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝    
+                                                                             
+ */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(0, 0, 0, 5%); 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+ 

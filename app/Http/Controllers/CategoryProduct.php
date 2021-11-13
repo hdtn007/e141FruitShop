@@ -15,8 +15,15 @@ class CategoryProduct extends Controller
     public function index() // hiển thị danh sách danh mục
     {
         // truy vấn danh mục chính
-        $all_category_product = DB::table('tbl_category_product')->get(); // lấy dữ liệu tất cả danh mục 
-        $manager_category_product = view('administrator.category-product')->with('list_category_product',$all_category_product); // gán biến $all_catagory_product vào tên list_category_product để gọi ra giao diện
+        $all_category_product = DB::table('tbl_category_product')
+                                ->join('tbl_admin', 
+                                       'tbl_category_product.category_author', 
+                                       '=', 
+                                       'tbl_admin.admin_id')
+                                ->select('tbl_category_product.*', 'tbl_admin.admin_name')
+                                ->get();
+        $manager_category_product = view('administrator.category-product')
+                                    ->with('list_category_product',$all_category_product);
 
        return view('admin-layout')->with('administrator.category-product',$manager_category_product); 
     }
@@ -27,7 +34,7 @@ class CategoryProduct extends Controller
 
         $data['category_name'] = $request->category_product_name; // request từ name html gán vào csdl
         $data['category_desc'] = $request->category_product_desc;
-        $data['category_author'] = Session::get('admin_name');
+        $data['category_author'] = Session::get('admin_id');
 
         DB::table('tbl_category_product')->insert($data); // câu truy vấn insert
 
@@ -46,7 +53,7 @@ class CategoryProduct extends Controller
 
         $data['category_sub'] = $request->sub_category_product_sub;
         $data['category_name'] = $request->sub_category_product_name;
-        $data['category_author'] = Session::get('admin_name');
+        $data['category_author'] = Session::get('admin_id');
 
         DB::table('tbl_category_product')->insert($data); // câu truy vấn insert
 
@@ -98,7 +105,7 @@ class CategoryProduct extends Controller
 
         $data['category_name'] = $request->edit_category_product_name; // request từ name html gán vào csdl
         $data['category_desc'] = $request->edit_category_product_desc;
-        $data['category_author'] = Session::get('admin_name');
+        $data['category_author'] = Session::get('admin_id');
 
         DB::table('tbl_category_product')
             ->where('category_id',$category_product_id)

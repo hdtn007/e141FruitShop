@@ -10,19 +10,26 @@
     <meta name="author" content="">
 
     <title>
-        @hasSection('admin-title')
-        @yield('admin-title') - 141Fruits Admin
-        @else
-            141Fruits Admin
+        @if(Request::segment(1) === 'dashboard')
+        Trình quản lý 
+        @elseif(Request::segment(1) === 'category-product')
+        Danh mục sản phẩm 
+        @elseif(Request::segment(1) === 'manage-product')
+        Quản lý sản phẩm
+        @elseif(Request::segment(1) === 'brand-tag')
+        Tag thương hiệu
+        {{-- @elseif(Request::segment(1) === 'dashboard') --}}
+        
         @endif
-         
+          - 141Fruit Admin
      </title> 
+     <link rel="shortcut icon" href="{{asset('public/media/img-icons/renewable.png')}}">
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('public/admin/vendor/fontawesome-free/css/all.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('public/admin/css/font-awesome.css')}}" rel="stylesheet" type="text/css">
     <link   
-    href="{{asset('public/https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}"
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
 
     <!-- Custom styles for this template-->
@@ -39,12 +46,12 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav sidebar bg-gradient-success sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{URL::to('/dashboard')}}">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-carrot"></i>
+                    <i class="fas fa-apple-alt"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">141Fruits</div>
             </a>
@@ -53,7 +60,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li title="Dashboard" class="nav-item active">
+            <li title="Dashboard" class="nav-item {{ Request::segment(1) === 'dashboard' ? 'active' : null }}">
                 <a class="nav-link" href="{{URL::to('/dashboard')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Tổng quan</span></a>
@@ -64,14 +71,14 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Sản phẩm
+                Bán hàng
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSell"
                     aria-expanded="true" aria-controls="collapseSell">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fab fa-opencart"></i>
                     <span>Bán Hàng</span>
                 </a>
                 <div id="collapseSell" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -84,34 +91,44 @@
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Trạng Thái</span>
+            <li class="nav-item {{ ( Request::segment(1) === 'category-product' || Request::segment(1) === 'brand-tag' ) ? 'active' : null }}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBrand"
+                    aria-expanded="true" aria-controls="collapseBrand">
+                    <i class="fas fa-boxes"></i>
+                    <span>Quản Lý Kho</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseBrand" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Danh sách :</h6>
-                        <a class="collapse-item" href="buttons.html">Sản phẩm</a>
-                        <a class="collapse-item" href="{{URL::to('/category-product')}}">Loại sản phẩm</a>
-                        <a class="collapse-item" href="{{URL::to('/brand-tag')}}">Tag Thương hiệu</a>
+                        <a  class="collapse-item {{ Request::segment(1) === 'manage-product' ? 'active' : null }}" 
+                            href="{{URL::to('/manage-product')}}">
+                            Sản phẩm
+                        </a>
+                        <a  class="collapse-item {{ Request::segment(1) === 'category-product' ? 'active' : null }}" 
+                            href="{{URL::to('/category-product')}}">
+                            Loại sản phẩm
+                        </a>
+                        <a  class="collapse-item {{ Request::segment(1) === 'brand-tag' ? 'active' : null }}" 
+                            href="{{URL::to('/brand-tag')}}">
+                            Tag Thương hiệu
+                        </a>
                     </div>
                 </div>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Cài Đặt Sự Kiện</span>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCampaign"
+                    aria-expanded="true" aria-controls="collapseCampaign">
+                    <i class="fas fa-gifts"></i>
+                    <span>Chiến dịch</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                <div id="collapseCampaign" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Tùy chỉnh :</h6>
                         <a title="Mã khuyến mãi ( giftcode )" class="collapse-item" href="#">Mã khuyến mãi</a>
+                        <a title="Mã khuyến mãi ( giftcode )" class="collapse-item" href="#">Vouchers</a>
                     </div>
                 </div>
             </li>
@@ -121,42 +138,85 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Blog
+                Mẹo
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePost"
+                    aria-expanded="true" aria-controls="collapsePost">
+                    <i class="fas fa-newspaper"></i>
                     <span>Bài viết</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapsePost" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Danh mục bài viết:</h6>
                         <a class="collapse-item" href="login.html">Viết bài mới</a>
                         <a class="collapse-item" href="register.html">Danh sách bài viết</a>
                         <a class="collapse-item" href="forgot-password.html">Nháp</a>
-                        <a class="collapse-item" href="forgot-password.html">Analytics</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Cài đặt :</h6>
-                        <a class="collapse-item" href="404.html">Loại bài viết</a>
+                        <a class="collapse-item" href="forgot-password.html">Mẫu</a>
+                        {{-- <div class="collapse-divider"></div> --}}
+                        {{-- <h6 class="collapse-header">Cài đặt :</h6> --}}
+                        {{-- <a class="collapse-item" href="404.html">Loại bài viết</a> --}}
                     </div>
                 </div>
             </li>
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettingPost"
+                    aria-expanded="true" aria-controls="collapseSettingPost">
+                    <i class="fas fa-cogs"></i>
+                    <span>Cài đặt bài viết</span>
+                </a>
+                <div id="collapseSettingPost" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Cài đặt :</h6>
+                        <a class="collapse-item" href="login.html">Danh mục bài viết</a>
+                        <a class="collapse-item" href="register.html">Tag bài viết</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                System
+            </div>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettingUser"
+                    aria-expanded="true" aria-controls="collapseSettingUser">
+                    <i class="fas fa-user-shield"></i>
+                    <span>User Setting</span>
+                </a>
+                <div id="collapseSettingUser" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Setting :</h6>
+                        <a class="collapse-item" href="login.html">Admin account</a>
+                        <a class="collapse-item" href="login.html">User account</a>
+                        <a class="collapse-item" href="register.html">Setting roles</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHistoryActivity"
+                    aria-expanded="true" aria-controls="collapseHistoryActivity">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </a>
+                <div id="collapseHistoryActivity" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Activity :</h6>
+                        <a class="collapse-item" href="login.html">Admin History</a>
+                        <a class="collapse-item" href="login.html">User History</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
@@ -287,7 +347,7 @@
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
+                                <i class="fas fa-shopping-cart"></i>
                                 <!-- Counter - Messages -->
                                 <span class="badge badge-danger badge-counter">7</span>
                             </a>
@@ -367,15 +427,15 @@
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    Trang cá nhân
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
+                                    Cài đặt
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
+                                <a class="dropdown-item" href="{{URL::to('/home')}}">
+                                    <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Trang chủ
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{URL::to('logout-dashboard')}}" data-toggle="modal" data-target="#logoutModal">

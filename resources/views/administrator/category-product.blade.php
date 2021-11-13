@@ -1,9 +1,5 @@
 @extends('admin-layout')
 
-@section('admin-title')
-Danh Mục Sản Phẩm
-@endsection
-
 @section('admin-content')
 
 <!-- Begin Page Content -->
@@ -99,7 +95,10 @@ Danh Mục Sản Phẩm
                     </tr>
                   </thead>
                   {{-- Every category row _________________1_______________________________ --}}
-                  <?php $stt = 0; ?>
+                  <?php 
+                      $stt = 0;
+                      $count = 0;
+                   ?>
                   @foreach($list_category_product as $key => $cate_pro)
 
                   {{-- category main row ______________DÒNG CHÍNH________________ --}}
@@ -107,12 +106,25 @@ Danh Mục Sản Phẩm
                   <?php
                       if($cate_pro->category_sub == "0"){
                         $stt=$stt+1;
+                        foreach($list_category_product as $keyss => $cate_count)
+                        {
+                            
+                            if ($cate_count->category_sub == $cate_pro->category_id) {
+                                $count = $count+1;
+                            }
+                        }
                       ?>
                   <tbody class="category-main">
                     <tr>
                       <td>{{$stt}}</td>
-                      <td class="w-25">{{$cate_pro->category_name}}</td>
-                      <td>{{$cate_pro->category_author}}</td>
+                      <td class="w-25">
+                            {{$cate_pro->category_name}}
+                          <span title="Có {{$count}} danh mục con" class="badge badge-light badge-pill" data-toggle="tooltip" data-placement="top"
+                          style="cursor: pointer;">
+                            {{$count}}
+                          </span>
+                      </td>
+                      <td>{{$cate_pro->admin_name}}</td>
                       <td>
                         <label class="switch">
                           <input 
@@ -120,10 +132,11 @@ Danh Mục Sản Phẩm
                               value="" 
                               type="checkbox" 
                               <?php if($cate_pro->category_status==1){
-                            echo "checked";
-                          }else{
-                            echo "";
-                          } ?>
+                                    echo "checked";
+                                  }else{
+                                    echo "";
+                                  } 
+                              ?>
                           >
                           <div class="slider round"></div>
                         </label>      
@@ -146,12 +159,15 @@ Danh Mục Sản Phẩm
                         </a>
                       </td>
                       <td>
-
+                        @if($count == 0)
+                        
+                        @else
                         <a class="nav-link collapsed text-primary" href="#" data-toggle="collapse" data-target="#danhmucconof{{$key}}" aria-expanded="true" aria-controls="danhmucconof{{$key}}">
                           <i class="fas fa-bars"></i>
                           <span>&nbsp;&nbsp;&nbsp;</span>
                         </a>
-
+                        @endif
+                        <?php $count = 0; ?>
                       </td>
                     </tr>
                   </tbody>
@@ -206,7 +222,7 @@ Danh Mục Sản Phẩm
                         <td>
                             <span class="multi-collapse" id="nameSubcate">{{$sub_cate_pro->category_name}}</span>                        
                         </td>
-                        <td>{{$sub_cate_pro->category_author}}</td>
+                        <td>{{$sub_cate_pro->admin_name}}</td>
                         <td>
                           <label class="switch">
                             <input 
