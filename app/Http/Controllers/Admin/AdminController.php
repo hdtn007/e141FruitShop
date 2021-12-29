@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use DB; //  thư viện database để sử dụng thao tác với database
@@ -13,6 +14,15 @@ session_start(); // khi có sử dụng sesstion phải khai báo
 
 class AdminController extends Controller
 {
+    public function AuthLogin(){
+        $admin_id = Session::get('admin_id');
+        if ($admin_id) {
+            return Redirect::to('dashboard');
+        } else {
+            return Redirect::to('administrator')->send();
+        }
+    }    
+
     public function index()
     {
         return view('admin-login-layout');
@@ -20,6 +30,7 @@ class AdminController extends Controller
 
     public function show_dashboard()
     {
+        $this->AuthLogin();
         return view('administrator.admin-dashboard');
     }
 
@@ -45,6 +56,7 @@ class AdminController extends Controller
 
     public function logout_dashboard() // xử lý đăng xuất admin
     {
+        $this->AuthLogin();
         Session::put('admin_name', null);
         Session::put('admin_avarta', null);
         Session::put('admin_id', null);
@@ -52,3 +64,4 @@ class AdminController extends Controller
     }
 
 }
+

@@ -20,7 +20,7 @@ class CreateTblCountry extends Migration
             $table->text('country_desc')->nullable();
             $table->integer('country_author_id')->nullable();
             $table->string('country_ensign')->default('vietnam.png'); // ảnh quốc kỳ
-            $table->string('country_other')->nullable();
+            $table->integer('country_counttag')->default(0);
             $table->timestamps();
         });
     }

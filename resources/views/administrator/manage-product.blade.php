@@ -8,34 +8,44 @@
 	<div class="container">
 		<!-- Content Row -->
 		<div class="row d-flex flex-lg-row justify-content-between">
-			<a href="{{URL::to('/manage-product/add')}}" type="button" class="btn btn-info">
-				<span class="text"><i class="fas fa-plus"></i> Thêm</span>
-			</a>
+			<div>
+				<a href="{{URL::to('/manage-product/add')}}" type="button" class="btn btn-info">
+					<span class="text"><i class="fas fa-plus"></i> Thêm</span>
+				</a>
+				<a id="btn_delete_product" onclick="window.location.href='{{URL::to('/manage-product/delete')}}'" type="button" class="btn disabled btn-danger">
+					<span class="text"><i class="fas fa-trash-alt"></i> Xóa</span>
+				</a>
+			</div>
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#print_modal_product">
 				<span class="text"><i class="fas fa-print"></i> In Danh Sách</span>
 			</button>
 		</div>
 	</div>
+	@if($count_over_pro)
 	<div class="mt-4 mx-3">
 		<span class="text-danger p-2 font-weight-bold border-left border-danger">
 			<i class="fas fa-exclamation-circle mx-1"></i>
-			Cảnh báo : <span class="font-weight-bold">Có 1 sản phẩm hết hàng !</span>
+			Cảnh báo : <span class="font-weight-bold">Có {{$count_over_pro}} sản phẩm trong kho đã hết hàng !</span>
 			<a class="text-decoration-none" href="{{URL::to('/manage-product/list-inventory')}}#tonkho"><u>Xem ngay !!!</u></a>
 		</span>
 		<div class="spinner-grow text-danger" role="status">
 			<span class="sr-only">Loading...</span>
 		</div>
 	</div>
+	@endif
+	@if($count_coming_pro)
 	<div class="mt-4 mx-3">
 		<span class="text-warning p-2 font-weight-bold border-left border-warning">
 			<i class="fas fa-exclamation-triangle mx-1"></i>
-			Cảnh báo : <span class="font-weight-bold">Có 1 sản phẩm sắp hết hàng !</span>
+			Cảnh báo : <span class="font-weight-bold">Có {{$count_coming_pro}} sản phẩm trong kho sắp hết !</span>
 			<a class="text-decoration-none" href="{{URL::to('/manage-product/list-inventory')}}#tonkho"><u>Xem ngay !!!</u></a>
 		</span>
 		<div class="spinner-grow text-warning" role="status">
 			<span class="sr-only">Loading...</span>
 		</div>
 	</div>
+	@endif
+	@if(0)
 	<div class="mt-4 mx-3">
 		<span class="text-danger p-2 font-weight-bold border-left border-danger">
 			<i class="fas fa-calendar-times mx-1"></i>
@@ -46,6 +56,8 @@
 			<span class="sr-only">Loading...</span>
 		</div>
 	</div>
+	@endif
+	@if(0)
 	<div class="mt-4 mx-3">
 		<span class="text-warning p-2 font-weight-bold border-left border-warning">
 			<i class="fas fa-hourglass-half mx-1"></i>
@@ -56,6 +68,7 @@
 			<span class="sr-only">Loading...</span>
 		</div>
 	</div>
+	@endif
 	<div class="shadow my-4 rounded p-2">
 		<div class="d-flex flex-lg-row justify-content-between my-2">
 			<h6 class="m-0 font-weight-bold text-primary">
@@ -67,53 +80,69 @@
 		</div>
 		<div class="mb-3">
 			<ul id="UL_filter" class="list-group list-group-flush">
-				@for($i=0 ; $i < 10 ; $i++)
+				@foreach ($list_product as $key => $pro_pro)
 				<div class="row-filter">
 					<li class="list-group-item mt-1 pl-1 border-0 d-flex">
 						<input 
+						onchange="status_btn(this)" 
+						id="item_product_{{$pro_pro->product_code}}"
+						name="item_product_{{$pro_pro->product_code}}" 
 						type="checkbox" 
-						class="align-self-center ml-0" 
-						name="">
+						class="align-self-center ml-0">
 						<div class="d-flex flex-md-row flex-column justify-content-between flex-grow-1 bd-highlight text-wrap text-break" >
+							@if($pro_pro->product_img1)
 							<img 
-							src="{{asset('/public/media/img-product/chuoi.png')}}"
-							width="100" class="bg-light rounded ml-1">
+							src="{{asset('/public/media/img-product/'.$pro_pro->product_img1)}}"
+							width="100" height="100" class="bg-light rounded ml-1">
+							@else
+							<img 
+							src="{{asset('/public/media/img-product/none.png')}}"
+							width="100" height="100" class="bg-light rounded ml-1">
+							@endif
 							<div class="d-flex flex-md-row justify-content-between flex-grow-1 bd-highlight text-wrap text-break ml-3">
 								<div>
 									<b style="color: #000000;">
-										Chuối chuối chuối  sadas d assa d as d asd  a da d as d a d ( 001sjbh )
+										{{$pro_pro->product_name}} ( {{$pro_pro->product_code}} )
 									</b>
 									<p>
+										@if($pro_pro->product_inventory <= 0)
 										<span class="bg-danger text-white px-1">
 											<i class="fas fa-exclamation-circle"></i>
 											Tồn Kho : 0 Trái
 										</span>
+										@elseif($pro_pro->product_inventory <= 5)
 										<span class="bg-warning text-white px-1">
 											<i class="fas fa-exclamation-triangle"></i>
 											Tồn Kho : 3 Trái
 										</span> 
+										@elseif($pro_pro->product_inventory > 5)
 										<span class="bg-info text-white px-1">
 											<i class="fas fa-check-circle"></i>
 											Tồn Kho : 12 Trái
 										</span>
-										<span> &nbsp; | HSD : 01/12/2021 
+										@endif
+
+										{{-- <span> &nbsp; | HSD : 01/12/2021 
 											<i class="fas fa-check-circle text-info"></i>
 											<i class="fas fa-exclamation-triangle text-warning"></i>
 											<i class="fas fa-exclamation-circle text-danger"></i>
-										</span>
+										</span> --}}
 									</p>
 									<div class="mt-2 d-flex flex-sm-row flex-column justify-content-between align-items-end">
 										<div class="mx-2 text-sm-left text-right">
 											<small>Người tạo</small>
 											<br>
-											<span class="text-dark font-weight-bold">Htdn007</span>
+											<span class="text-dark font-weight-bold">
+												{{$pro_pro->admin_name}}
+											</span>
 											
 										</div>
 										<div class="mx-2 text-sm-left text-right">
 											<small>Giá nhập</small>
 											<br>
 											<span 
-											class="text-success font-weight-bold">502.000đ
+											class="text-success font-weight-bold">
+												{{number_format($pro_pro->product_import_price,0,",",".")}}đ
 											</span>
 										</div>
 										<div class="mx-2 text-sm-left text-right">
@@ -121,7 +150,9 @@
 											<br>
 											<span 
 											class="text-danger font-weight-bold">
-											<del>650.000đ</del>
+											<u>
+												{{number_format($pro_pro->product_sell_price,0,",",".")}}đ
+											</u>
 											</span>
 										</div>
 										<div class="mx-2 text-sm-left text-right">
@@ -129,20 +160,20 @@
 											<br>
 											<span class="font-weight-bold" 
 											style="color: #DC3545;">
-											650.000đ
+											{{number_format($pro_pro->product_sale_price,0,",",".")}}đ
 											</span>
 										</div>
 										<div class="mx-2 text-sm-left text-right">
 											<small>Đã bán</small>
 											<br>
 											<span class="font-weight-bold text-info">
-											2000 trái
+											{{$pro_pro->product_count_product_sold}} {{$pro_pro->product_unit}}
 											</span>
 										</div>
 										<div class="mx-2 text-sm-left text-right">
 											<small>Lượt thích</small>
 											<br>
-											<span class="font-weight-bold" style="color: #EF63E4;">502
+											<span class="font-weight-bold" style="color: #EF63E4;">{{$pro_pro->product_like}}
 											</span>
 										</div>
 									</div>
@@ -150,27 +181,25 @@
 								<div class="px-2 d-flex align-items-start flex-column bd-highlight">
 									<label class="switch bd-highlight">
 										<input 
-										onclick="window.location.href='#'" 
+										onclick="window.location.href='{{URL::to('/manage-product/update-status/'.$pro_pro->product_code)}}'" 
 										value="" 
 										type="checkbox" 
-										<?php if(1){
-											echo "checked";
-										}else{
-											echo "";
-										} 
+										{{$pro_pro->product_status === 1 ? 'checked' : ''}} 
 									?>
 									>
 										<div class="slider round"></div>
 									</label>
-									<div class="mt-5 bd-highlight">
-										<a href="{{URL::to('/manage-product/detail/code')}}">Xem & sửa</a>
+									<div class="mt-5 d-flex flex-column flex-md-row bd-highlight">
+										<a class="mt-1 mx-md-1 bd-highlight btn-sm btn-primary" href="{{URL::to('/manage-product/detail/'.$pro_pro->product_code)}}">Xem</a>
+										<a class="mt-1 mx-md-1 bd-highlight btn-sm btn-primary bg-info" href="{{URL::to('/manage-product/edit/'.$pro_pro->product_code)}}">Update</a>
+										<button class="mt-1 mx-md-1 bd-highlight btn-sm border border-dark text-dark bg-white">Nhập</button>
 									</div>
 								</div>
 							</div>
 						</div>
 					</li>
 				</div>
-				@endfor
+				@endforeach
 			</ul>
 		</div>
 		<nav aria-label="Page navigation example">

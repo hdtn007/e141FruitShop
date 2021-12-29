@@ -19,6 +19,8 @@ class CreateTblProduct extends Migration
             $table->string('product_code')->nullable();         // mã sp
             $table->string('product_qrcode')->nullable();       // mã QR
             $table->string('product_name');
+            $table->integer('product_number_unit')->default(1); // số đơn vị tính
+            $table->string('product_unit');                     // đơn vị tính
             $table->integer('product_category_id');             // danh mục
             $table->integer('product_country_id');              // xuất xứ
             $table->integer('product_brand_id')->nullable();    // thương hiệu
@@ -36,6 +38,11 @@ class CreateTblProduct extends Migration
             $table->string('product_url');                      // đường dẫn đến sp
             $table->text('product_keywords')->nullable();       // từ khóa SEO
             $table->integer('product_def_expires')->nullable(); // số ngày hết hạn tiêu chuẩn ( tính bằng ngày )
+            $table->string('product_img1')->nullable();         // ảnh minh họa
+            $table->string('product_img2')->nullable();         // ảnh minh họa
+            $table->string('product_img3')->nullable();         // ảnh minh họa
+            $table->string('product_img4')->nullable();         // ảnh minh họa
+            $table->string('product_img5')->nullable();         // ảnh minh họa
             $table->timestamps();
         });
     }

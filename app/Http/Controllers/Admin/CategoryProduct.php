@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use DB; //  thư viện database để sử dụng thao tác với database
@@ -12,8 +13,18 @@ session_start(); // khi có sử dụng sesstion phải khai báo
 
 class CategoryProduct extends Controller
 {
+    public function AuthLogin(){
+        $admin_id = Session::get('admin_id');
+        if ($admin_id) {
+            return Redirect::to('dashboard');
+        } else {
+            return Redirect::to('administrator')->send();
+        }
+    }
+
     public function index() // hiển thị danh sách danh mục
     {
+        $this->AuthLogin();
         // truy vấn danh mục chính
         $all_category_product = DB::table('tbl_category_product')
                                 ->join('tbl_admin', 
@@ -30,6 +41,8 @@ class CategoryProduct extends Controller
 
     public function saveAddCategoryMain(Request $request) // lưu danh mục chính
     {
+        $this->AuthLogin();
+
         $data = array();
 
         $data['category_name'] = $request->category_product_name; // request từ name html gán vào csdl
@@ -49,6 +62,8 @@ class CategoryProduct extends Controller
 
     public function saveAddCategorySub(Request $request) // lưu danh mục con
     {
+        $this->AuthLogin();
+
         $data = array();
 
         $data['category_sub'] = $request->sub_category_product_sub;
@@ -64,6 +79,8 @@ class CategoryProduct extends Controller
 
     public function save_update_status_category($category_product_id , $category_product_status , $category_product_sub) // lưu danh mục con
     {
+        $this->AuthLogin();
+
         if($category_product_status == 0)
         {
             if($category_product_sub == 0){
@@ -100,6 +117,8 @@ class CategoryProduct extends Controller
 
     public function saveEditCategory(Request $request)
     {
+        $this->AuthLogin();
+
         $data = array();
         $category_product_id = $request->edit_category_product_id;
 
@@ -118,6 +137,8 @@ class CategoryProduct extends Controller
 
     public function delete_category_product($category_product_id , $category_product_sub)
     {
+        $this->AuthLogin();
+        
         $countProduct = 0; // Biến thống kê tổng số sản phẩm thuộc id này và id con
         // nếu tổng số sản phẩm còn tồn tại lớn hơn 0 thì không được xóa danh mục
         // tạm thời cho tổng số luôn bằng 0

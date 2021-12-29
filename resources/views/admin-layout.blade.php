@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -38,11 +39,16 @@
 
     <!-- Custom styles for table page -->
     <link href="{{asset('public/admin/vendor/datatables/dataTables.bootstrap4.css')}}" rel="stylesheet">
+
+    <!-- sweetalert2-->
+    <script src="{{asset('public/admin/vendor/sweetalert2/sweetalert2.all.min.js')}}"></script>
+
+    
 </head>
 
 <body id="page-top">
-
-    <!-- Page Wrapper -->
+ 
+     <!-- Page Wrapper -->
     <div id="wrapper">
 
         <!-- Sidebar -->
@@ -83,9 +89,9 @@
                 </a>
                 <div id="collapseSell" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Lựa chọn kênh</h6>
-                        <a class="collapse-item" href="buttons.html">Kênh Offline</a>
-                        <a class="collapse-item" href="cards.html">Kênh Online</a>
+                        <h6 class="collapse-header">Kênh online</h6>
+                        <a class="collapse-item" href="buttons.html">Đơn Hàng Mới</a>
+                        <a class="collapse-item" href="cards.html">Đã Chốt</a>
                     </div>
                 </div>
             </li>
@@ -126,9 +132,25 @@
                 <div id="collapseCampaign" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Tùy chỉnh :</h6>
+                        <h6 class="collapse-header">Chương trình :</h6>
                         <a title="Mã khuyến mãi ( giftcode )" class="collapse-item" href="#">Mã khuyến mãi</a>
-                        <a title="Mã khuyến mãi ( giftcode )" class="collapse-item" href="#">Vouchers</a>
+                        <a title="Phiếu quà tặng ( Vouchers )" class="collapse-item" href="#">Vouchers</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_product_tooll_menu"
+                    aria-expanded="true" aria-controls="collapse_product_tooll_menu">
+                    <i class="fas fa-tools"></i>
+                    <span>Công cụ khác</span>
+                </a>
+                <div id="collapse_product_tooll_menu" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Tùy chỉnh :</h6>
+                        <a title="Đơn vị tính ( giftcode )" class="collapse-item" href="#">Đơn vị tính</a>
                     </div>
                 </div>
             </li>
@@ -304,7 +326,7 @@
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
-                                    Alerts Center
+                                    Lịch sử hành động mới !
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
@@ -313,8 +335,10 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                        <div class="small text-gray-500">12/12/2021 | 11:30:30 ( by Hdtn007)</div>
+                                        <span class="font-weight-bold">
+                                            Đã thêm sản phẩm mới !
+                                        </span>
                                     </div>
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
@@ -324,22 +348,12 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
+                                        <div class="small text-gray-500">12/12/2021 | 11:30:30 ( by Hdtn007)</div>
+                                        Đã thêm danh mục sản phẩm mới !
                                     </div>
                                 </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Xem hành động admin</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Xem hành động khách hàng</a>
                             </div>
                         </li>
 
@@ -355,7 +369,7 @@
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
                                 <h6 class="dropdown-header">
-                                    Message Center
+                                    Hóa Đơn Mua Hàng Mới
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
@@ -364,48 +378,12 @@
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                        <div class="text-truncate">Hóa đơn mua hàng mới !.</div>
+                                        <div class="small text-gray-500">Khách hàng 005 · 5 phút trước</div>
                                     </div>
                                 </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="{{asset('public/media/undraw_profile_2.svg')}}"
-                                            alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="{{asset('public/media/undraw_profile_3.svg')}}"
-                                            alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="{{('https://source.unsplash.com/Mv9hjnEUHR4/60x60')}}"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                                
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Xem tất cả các đơn hàng</a>
                             </div>
                         </li>
 

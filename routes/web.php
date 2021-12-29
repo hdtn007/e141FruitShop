@@ -24,16 +24,16 @@ use Illuminate\Support\Facades\Route;
 // _____________  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝ _______________________
 
 Route::get('/administrator',
-		   'AdminController@index'); // ADMIN LOGIN LAUOUT
+		   'Admin\AdminController@index'); // ADMIN LOGIN LAUOUT
 
 // ĐĂNG NHẬP
 Route::post('/admin-dashboard',
-		    'AdminController@login_dashboard'); // Đăng nhập admin
+		    'Admin\AdminController@login_dashboard'); // Đăng nhập admin
 
 
 // ĐĂNG XUẤT
 Route::get('/logout-dashboard',
-		   'AdminController@logout_dashboard'); // Đăng xuất admin
+		   'Admin\AdminController@logout_dashboard'); // Đăng xuất admin
 
 
 // TẠO TÀI KHOẢN
@@ -57,43 +57,43 @@ Route::get('/logout-dashboard',
 */
 
 Route::get('/', 
-		   'HomeController@index'); // TRANG CHỦ
+		   'Customer\HomeController@index'); // TRANG CHỦ
 Route::get('/home', 
-		   'HomeController@index'); // TRANG CHỦ
+		   'Customer\HomeController@index'); // TRANG CHỦ
 
 
  
-// Route::get('store', 'HomeController@index'); // cửa hàng
+// Route::get('store', 'Customer\HomeController@index'); // cửa hàng
 
-//Route::get('/home', 'HomeController@index'); // loại sản phẩm
+//Route::get('/home', 'Customer\HomeController@index'); // loại sản phẩm
 
-//Route::get('/home', 'HomeController@index'); // chi tiết sản phẩm
+//Route::get('/home', 'Customer\HomeController@index'); // chi tiết sản phẩm
 
-//Route::get('/home', 'HomeController@index'); // giỏ hàng + thanh toán
+//Route::get('/home', 'Customer\HomeController@index'); // giỏ hàng + thanh toán
 
-//Route::get('/home', 'HomeController@index'); // Check đơn hàng đã đặt
+//Route::get('/home', 'Customer\HomeController@index'); // Check đơn hàng đã đặt
 
-// Route::get('/home', 'HomeController@index'); // Đăng nhập
+// Route::get('/home', 'Customer\HomeController@index'); // Đăng nhập
 
-// Route::get('/home', 'HomeController@index'); // Tạo tài khoản
+// Route::get('/home', 'Customer\HomeController@index'); // Tạo tài khoản
 
-// Route::get('/home', 'HomeController@index'); // Shop Xu
+// Route::get('/home', 'Customer\HomeController@index'); // Shop Xu
 
-// Route::get('/home', 'HomeController@index'); // Mã Khuyến Mãi
+// Route::get('/home', 'Customer\HomeController@index'); // Mã Khuyến Mãi
 
-// Route::get('/home', 'HomeController@index'); // Liên Hệ
+// Route::get('/home', 'Customer\HomeController@index'); // Liên Hệ
 
-// Route::get('/home', 'HomeController@index'); // Chính Sách
+// Route::get('/home', 'Customer\HomeController@index'); // Chính Sách
 
-// Route::get('/home', 'HomeController@index'); // Tài Khoản Cá Nhân
+// Route::get('/home', 'Customer\HomeController@index'); // Tài Khoản Cá Nhân
 
-// Route::get('/home', 'HomeController@index'); // Danh Sách Yêu Thích
+// Route::get('/home', 'Customer\HomeController@index'); // Danh Sách Yêu Thích
 
-// Route::get('/home', 'HomeController@index'); // Bài Viết
+// Route::get('/home', 'Customer\HomeController@index'); // Bài Viết
 
-// Route::get('/home', 'HomeController@index'); // Loại Bài Viết
+// Route::get('/home', 'Customer\HomeController@index'); // Loại Bài Viết
 
-// Route::get('/home', 'HomeController@index'); // Chi tiết bài viết
+// Route::get('/home', 'Customer\HomeController@index'); // Chi tiết bài viết
 
 //_____________________________________________________________________
 // ___________  █████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗ ________________
@@ -105,7 +105,7 @@ Route::get('/home',
 
 
 Route::get('/dashboard', 
-		   'AdminController@show_dashboard'); // ADMIN DASHBOARD LAYOUT
+		   'Admin\AdminController@show_dashboard'); // ADMIN DASHBOARD LAYOUT
 
 
 
@@ -118,63 +118,88 @@ Route::get('/dashboard',
 
 
 Route::get('/category-product', 
-		   'CategoryProduct@index'); // Show danh mục sản phẩm
+		   'Admin\CategoryProduct@index'); // Show danh mục sản phẩm
 
 // ---------- Thêm Danh Mục ------------
 Route::post('/save-category-product', 
-		    'CategoryProduct@saveAddCategoryMain'); // Thêm danh mục chính
+		    'Admin\CategoryProduct@saveAddCategoryMain'); // Thêm danh mục chính
 Route::post('/save-sub-category-product', 
-		    'CategoryProduct@saveAddCategorySub'); // Thêm danh mục con
+		    'Admin\CategoryProduct@saveAddCategorySub'); // Thêm danh mục con
 
 // ---------- Sửa Danh Mục ------------
 Route::get('/edit-category-status/{category_product_id}&{category_product_status}&{category_product_sub}', 
-		   'CategoryProduct@save_update_status_category'); // Sửa trạng thái hiển thị danh mục
+		   'Admin\CategoryProduct@save_update_status_category'); // Sửa trạng thái hiển thị danh mục
 Route::post('/save-update-category-product', 
-		    'CategoryProduct@saveEditCategory'); // Sửa danh mục
+		    'Admin\CategoryProduct@saveEditCategory'); // Sửa danh mục
 
 // ---------- Xóa Danh Mục ------------
 Route::get('/delete-category-product/{category_product_id}&{category_product_sub}', 
-           'CategoryProduct@delete_category_product'); // Xóa danh mục sản phẩm
+           'Admin\CategoryProduct@delete_category_product'); // Xóa danh mục sản phẩm
 
 
-// ________________________________________________________________
-// ________________________________________________________________
-// ________________________________________________________________
-// __________________ BRAND TAG ( THẺ THƯƠNG HIỆU SẢN PHẨM ) ______
-// ________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ BRAND TAG ( THẺ THƯƠNG HIỆU SẢN PHẨM ) _________________
+// ___________________________________________________________________________
 
 Route::get('/brand-tag', 
-           'BrandProduct@index'); // danh sách tag thương hiệu
+           'Admin\BrandProduct@index'); // danh sách tag thương hiệu
 
-// ---------- Thêm Thương Hiệu ------------
-// Route::post('/brand-tag','BrandProduct@index'); // 
-// ---------- Sửa Thương Hiệu ------------
-Route::post('/Edit-Country','BrandProduct@Edit_Country'); // 
-// ---------- Xóa Thương Hiệu ------------
-// Route::get('/brand-tag','BrandProduct@index'); // 
+// ---------- Thêm quốc gia ------------
+Route::post('/add-country','Admin\BrandProduct@Add_Country');
+// ---------- Thêm thương hiệu ------------
+Route::post('/add-brand','Admin\BrandProduct@Add_Brand');
+// ---------- Thêm nhà cung cấp ------------
+Route::post('/add-supplier','Admin\BrandProduct@Add_Supplier');
 
-// ________________________________________________________________
-// ________________________________________________________________
-// ________________________________________________________________
-// __________________ PRODUCT ( SẢN PHẨM ) ________________________
-// ________________________________________________________________
+
+// ---------- sữa quốc gia ------------
+Route::post('/edit-country','Admin\BrandProduct@Edit_Country');
+// ---------- sữa nhà cung cấp ------------
+Route::post('/edit-supplier','Admin\BrandProduct@Edit_Supplier');
+
+// ---------- Xóa quốc gia ------------
+Route::get('/delete-country/{country_id}','Admin\BrandProduct@Delete_Country');
+// ---------- Xóa thương hiệu ------------
+Route::get('/delete-brand/{brand_id}&{country_id}','Admin\BrandProduct@Delete_Brand');
+// ---------- Xóa nhà cung cấp ------------
+Route::get('/delete-supplier/{supplier_id}','Admin\BrandProduct@Delete_Supplier');
+
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ PRODUCT ( SẢN PHẨM ) ___________________________________
+// ___________________________________________________________________________
 
 Route::get('/manage-product', 
-           'ProductController@index'); // danh sách tag thương hiệu
+           'Admin\Product@index'); // danh sách tất cả các sản phẩm
 Route::get('/manage-product/list-out-of-date',
-           'ProductController@list_other'); // các danh sách sản phẩm hết hạn
+           'Admin\Product@list_other'); // các danh sách sản phẩm hết hạn
 Route::get('/manage-product/list-inventory',
-           'ProductController@list_other'); // các danh sách sản phẩm hết hàng
-Route::get('/manage-product/detail/code', 
-           'ProductController@detail_product'); // chi tiết sản phẩm
+           'Admin\Product@list_other'); // các danh sách sản phẩm hết hàng
+Route::get('/manage-product/detail/{code_product}', 
+           'Admin\Product@detail_product'); // chi tiết sản phẩm
 Route::get('/manage-product/add', 
-           'ProductController@show_add'); // chi tiết sản phẩm
+           'Admin\Product@show_add'); // show thêm sản phẩm
+Route::get('/manage-product/edit/{code_product}', 
+           'Admin\Product@show_edit'); // show sửa sản phẩm
 
 
 
-// ---------- Thêm Thương Hiệu ------------
-// Route::post('/brand-tag','BrandProduct@index'); // 
-// ---------- Sửa Thương Hiệu ------------
-// Route::post('/Edit-Country','BrandProduct@Edit_Country');  
-// ---------- Xóa Thương Hiệu ------------
-// Route::get('/brand-tag','BrandProduct@index'); // 
+// ---------- Thêm sản phẩm ------------
+Route::post('/manage-product/save-new-product', 
+           'Admin\Product@save_new_product');
+
+
+
+// ---------- Sửa sản phẩm ------------
+Route::get('/manage-product/update-status/{code_product}', 
+           'Admin\Product@Update_Status'); // Cập nhật trạng thái sản phẩm
+Route::post('/manage-product/update/save', 
+           'Admin\Product@save_update_product'); // Cập nhật thông tin sản phẩm
+
+
+// ---------- Xóa sản phẩm ------------
+Route::get('/manage-product/delete-img/{img_product}&{code_product}',
+		   'Admin\Product@delete_img_product'); // Xóa ảnh minh họa sản phẩm

@@ -6,10 +6,10 @@
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb breadcrumb-custom">
 				<li class="breadcrumb-item">
-					<a class="text-decoration-none" href="{{URL::to('/manage-product')}}" data-abc="true">Quản lý sản phẩm</a>
+					<a class="text-decoration-none" href="{{URL::to('/manage-product')}}" data-abc="true">Tất cả sản phẩm</a>
 				</li>
 				<li class="breadcrumb-item active" aria-current="page">
-					<span>Chi chi tiết sản phẩm</span>
+					<span>{{$detail_pro->product_name}} ( {{$detail_pro->product_code}} )</span>
 				</li>
 			</ol>
 		</nav>
@@ -21,96 +21,130 @@
 		<div class="my-2 d-flex justify-content-between">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
-					<li class="page-item">
-						<a class="page-link" href="#">
-							<i class="fas fa-chevron-left"></i>
-						</a>
-					</li>
-					<li class="page-item ml-1">
-						<a class="page-link" href="#">
-							<i class="fas fa-chevron-right"></i>
-						</a>
-					</li>
+				@foreach($list_product as $key => $list_pro)
+					@if($list_pro->product_id == $detail_pro->product_id - 1)
+						<li class="page-item">
+							<a class="page-link" href="{{URL::to('/manage-product/detail/'.$list_pro->product_code)}}">
+								<i class="fas fa-chevron-left"></i>
+							</a>
+						</li>
+					@endif
+					@if($list_pro->product_id == $detail_pro->product_id)
+					@endif
+					@if($list_pro->product_id == $detail_pro->product_id + 1)
+						<li class="page-item ml-1">
+							<a class="page-link" href="{{URL::to('/manage-product/detail/'.$list_pro->product_code)}}">
+								<i class="fas fa-chevron-right"></i>
+							</a>
+						</li>
+					@endif
+				@endforeach
 				</ul>
 			</nav>
 			<div>
-				<button class="btn bg-info border-info text-white font-weight-bold mr-2">
+				<a href="{{URL::to('manage-product/edit/'.$detail_pro->product_code)}}" class="btn bg-info border-info text-white font-weight-bold mr-2">
 					Chỉnh sửa
-				</button>
+				</a>
 			</div>
 		</div>
         <div class="row">
             <div class="col-sm-5 p-2">
                 <div class="img-product-container"> 
-                	<a id="btncontrolprew" onclick="showimgmodal(this)" href="" data-toggle="modal" data-target="#ViewImgModal" data-nameimg="{{asset('/public/media/img-product/chuoi.png')}}">
-                		<img id="idzoomimg" src="{{asset('/public/media/img-product/chuoi.png')}}" width="350" />
+                	@if($detail_pro->product_img1)
+                	<a id="btncontrolprew" onclick="showimgmodal(this)" href="" data-toggle="modal" data-target="#ViewImgModal" data-nameimg="{{asset('/public/media/img-product/'.$detail_pro->product_img1)}}">
+                		<img id="idzoomimg" src="{{asset('/public/media/img-product/'.$detail_pro->product_img1)}}" width="350" />
                 	</a>
+                	@else
+                	<a title="Thêm ảnh" href="{{URL::to('manage-product/edit/'.$detail_pro->product_code)}}" id="btncontrolprew" onclick="showimgmodal(this)"  data-nameimg="{{asset('/public/media/img-product/none.png')}}">
+                		<img id="idzoomimg" src="{{asset('/public/media/img-product/none.png')}}" width="350" />
+                	</a>
+                	@endif
                 	
                     <div class="img-product-thumbs"> 
-                    	<a onclick="PreviewImage(this)" data-bs-img-preview="idzoomimg" data-bs-img-input="{{asset('/public/media/img-product/chuoi.png')}}"> 
-                    		<img width="80" src="{{asset('/public/media/img-product/chuoi.png')}}" >
-                    	</a> 
-                    	<a onclick="PreviewImage(this)" data-bs-img-preview="idzoomimg" data-bs-img-input="{{asset('/public/media/img-product/Cherry.png')}}"> 
-                    		<img width="80" src="{{asset('/public/media/img-product/Cherry.png')}}"> 
-                    	</a>
-                    	<a onclick="PreviewImage(this)" data-bs-img-preview="idzoomimg" data-bs-img-input="{{asset('/public/media/img-product/sapo.png')}}">
-                    		<img width="80" src="{{asset('/public/media/img-product/sapo.png')}}">
-                    	</a>
-                    	<label for="addimgproduct">
-                    		<img width="80" class="p-3" src="{{asset('public/media/img-icons/plus.png')}}">
-                    	</label>
-                    	<input 
-                    		id="addimgproduct" 
-                    		hidden type="file" 
-                    		accept="image/*"
-                    		name="">
-
+                    	@if($detail_pro->product_img1)
+	                    	<a onclick="ViewImageProduct(this)" data-bs-img-preview="idzoomimg" data-bs-img-input="{{asset('/public/media/img-product/'.$detail_pro->product_img1)}}"> 
+	                    		<img width="80" src="{{asset('/public/media/img-product/'.$detail_pro->product_img1)}}" >
+	                    	</a>
+	                    @else
+		                    <a href="{{URL::to('manage-product/edit/'.$detail_pro->product_code)}}" onclick="ViewImageProduct(this)" data-bs-img-preview="idzoomimg" data-bs-img-input="{{asset('/public/media/img-product/none.png')}}"> 
+		                    	<img width="80" src="{{asset('/public/media/img-product/none.png')}}" >
+		                    </a>
+                    	@endif
+                    	@if($detail_pro->product_img2)
+	                    	<a onclick="ViewImageProduct(this)" data-bs-img-preview="idzoomimg" data-bs-img-input="{{asset('/public/media/img-product/'.$detail_pro->product_img2)}}"> 
+	                    		<img width="80" src="{{asset('/public/media/img-product/'.$detail_pro->product_img2)}}" >
+	                    	</a>
+                    	@endif
+                    	@if($detail_pro->product_img3)
+	                    	<a onclick="ViewImageProduct(this)" data-bs-img-preview="idzoomimg" data-bs-img-input="{{asset('/public/media/img-product/'.$detail_pro->product_img3)}}"> 
+	                    		<img width="80" src="{{asset('/public/media/img-product/'.$detail_pro->product_img3)}}" >
+	                    	</a>
+                    	@endif
+                    	@if($detail_pro->product_img4)
+	                    	<a onclick="ViewImageProduct(this)" data-bs-img-preview="idzoomimg" data-bs-img-input="{{asset('/public/media/img-product/'.$detail_pro->product_img4)}}"> 
+	                    		<img width="80" src="{{asset('/public/media/img-product/'.$detail_pro->product_img4)}}" >
+	                    	</a>
+                    	@endif
+                    	@if($detail_pro->product_img5)
+	                    	<a onclick="ViewImageProduct(this)" data-bs-img-preview="idzoomimg" data-bs-img-input="{{asset('/public/media/img-product/'.$detail_pro->product_img5)}}"> 
+	                    		<img width="80" src="{{asset('/public/media/img-product/'.$detail_pro->product_img5)}}" >
+	                    	</a>
+                    	@endif
                     </div>
                 </div>
             </div>
             <div class="col-sm-4 info-detail-product p-2">
             	<div class="name-product">
-            		<span class="h5 font-weight-bold">Chuối tây chuối ta, Oh my chuối ( 001 )</span>
+            		<span class="h5 font-weight-bold">{{$detail_pro->product_name}} ( {{$detail_pro->product_code}} )</span>
             	</div>
             	<div class="mt-2 info-items">
-            		<span class="text-primary font-weight-bold">Thuộc danh mục : </span> Trái cây
+            		<span class="text-primary font-weight-bold">Thuộc danh mục : </span> {{$detail_pro->category_name}}
             	</div>
             	<div class="mt-2 info-items">
             		<span class="text-primary font-weight-bold">Xuất xứ : </span> 
-            		Việt Nam
+            		{{$detail_pro->country_name}}
             	</div>
             	<div class="mt-2 info-items">
-            		<span class="text-primary font-weight-bold">Tag : </span> 
-            		Đà lạt
+            		<span class="text-primary font-weight-bold">Thương hiệu : </span> 
+            		{{$get_brand != null ? ''.$get_brand.'':'Unknown!'}}
             	</div>
             	<div class="mt-2">
-            		<span class="text-primary font-weight-bold">Giá nhập : </span> 50.000đ
+            		<span class="text-primary font-weight-bold">Giá nhập : </span> 
+            		{{number_format($detail_pro->product_import_price,0,",",".")}}đ
             	</div>
             	<div class="mt-2">
-            		<span class="text-primary font-weight-bold">Giá bán : </span> 200.000đ
+            		<span class="text-primary font-weight-bold">Giá bán : </span> 
+            		{{number_format($detail_pro->product_sell_price,0,",",".")}}đ
             	</div>
             	<div class="mt-2">
-            		<span class="text-primary font-weight-bold">Giá khuyến mãi : </span> 100.000đ <img width="30" src="{{asset('public/media/img-icons/sale2.png')}}">
+            		<span class="text-primary font-weight-bold">Giá khuyến mãi : </span> 
+            		@if($detail_pro->product_sale_price)
+            			{{number_format($detail_pro->product_sale_price,0,",",".")}}đ
+            			<img width="30" src="{{asset('public/media/img-icons/sale2.png')}}">
+            		@else
+            			No Sale
+            		@endif
             	</div>
             	<div class="mt-2">
             		<span class="text-primary font-weight-bold">Tồn kho : 
-            		</span> 100 Trái 
+            		</span> {{$detail_pro->product_inventory}} {{$detail_pro->product_unit}} 
             	</div>
             	<div class="mt-2">
             		<span class="text-primary font-weight-bold">Hạn sử dụng tiêu chuẩn: 
-            		</span> 100 Ngày 
+            		</span> 
+            		@if($detail_pro->product_def_expires)
+            			{{$detail_pro->product_def_expires}} Ngày
+            		@else
+            			Unknown!
+            		@endif
+            		 
             	</div>
             	<hr> 
             	<div class="mt-2">
             		<span class="text-primary font-weight-bold">Từ khóa SEO : 
             		</span>
             		<span>
-            			<label>wkwnd</label>,
-            			<label>wkwnd</label>,
-            			<label>wkwnd</label>,
-            			<label>wkwnd</label>,
-            			<label>wkwnd</label>,
-            			<label>wkwnd</label>,
+            			{{$detail_pro->product_keywords}}
             		</span>
             	</div>
             	<hr>
@@ -119,18 +153,32 @@
         		<div class="d-flex">
         			<label class="switch my-0 ">
         				<input 
-        				value="" 
+        				value=""
+        				onclick="window.location.href='{{URL::to('/manage-product/update-status/'.$detail_pro->product_code)}}'"
+        				{{$detail_pro->product_status === 1 ? 'checked' : ''}}
         				type="checkbox">
         				<div class="slider round"></div>
         			</label>
+        			@if($detail_pro->product_status === 1)
         			<span class="text-success mx-1 align-content-center mx-2">
-        				Đang hoạt động
+        				Hiển thị sản phẩm
         			</span>
+        			@else
+        			<span class="text-danger mx-1 align-content-center mx-2">
+        				Ẩn sản phẩm
+        			</span>
+        			@endif
         		</div>
         		<hr>
             	<span class="text-dark font-weight-bold">QR:</span>
             	<div class="mt-2 text-center">
-            		<img width="60" src="{{asset('/public/media/img-product/qr-code-product/none.png')}}">
+            		@if($detail_pro->product_qrcode)
+            		<img width="60" height="60" src="{{asset('/public/media/img-product/qr-code-product/'.$detail_pro->product_qrcode)}}">
+            		@else
+            			<img width="60" height="60" src="{{asset('/public/media/img-product/qr-code-product/none.png')}}">
+            			<br>
+            		<p class="small">Unknown!</p>           		
+            		@endif
             		<br>  
             		
             	</div>
@@ -139,6 +187,8 @@
             			Thống kê tháng :
             	</span>
         		<div>
+        			Chưa có thống kê !
+        			<!--
         			<small>Tháng 10 :</small>
         			<div class="progress">
         				<div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
@@ -151,35 +201,40 @@
         				25
         				</div>
         			</div>
+        		-->
         		</div>
             		<hr>
             		<span class="text-center text-dark font-weight-bold">
             			Thống kê tổng :
             		</span>
             	<div class="mt-2">
-            		<span class="text-danger font-weight-bold">Tổng mua : </span> 200.000 Trái
+            		<span class="text-danger font-weight-bold">Tổng mua : </span> 
+            		{{number_format($detail_pro->product_count_product_sold,0,",",".")}} {{$detail_pro->product_unit}}
             	</div>
         		<div class="mt-2">
-            		<span class="text-danger font-weight-bold">Lượt xem : </span> 200.000 <i class="fas fa-eye"></i>
+            		<span class="text-danger font-weight-bold">Lượt xem : </span> 
+            		{{number_format($detail_pro->product_view,0,",",".")}} <i class="fas fa-eye"></i>
             	</div>
             	<div class="mt-2">
-            		<span class="text-danger font-weight-bold">Lượt thích : </span> 200.000 <i class="fas fa-heart"></i>
+            		<span class="text-danger font-weight-bold">Lượt thích : </span> 
+            		{{number_format($detail_pro->product_like,0,",",".")}} <i class="fas fa-heart"></i>
             	</div>
         	</div>
         </div>
         <div>
         	<div class="mt-2">
-        		<small>Tạo bởi : Ngoãn Royal</small>
+        		<small>Tạo bởi : {{$detail_pro->admin_name}}</small>
         	</div>
         	<div class="mt-2">
-        		<small>Tạo ngày : 30/12/2021</small>
+        		<small>Tạo ngày : {{date('d/m/Y', strtotime($detail_pro->created_at))}}</small> 
+
         	</div>
         </div>
         <div class="mt-2">
         	<div>
         		<span class="text-primary font-weight-bold">Mô tả :</span>
         		<div class="text-dark ml-1">
-        			bdhbdhabshb
+        			{{$detail_pro->product_desc}}
         		</div>
         	</div>
         </div>
@@ -203,254 +258,101 @@
 			</button>
 	</div>
 	<div class="import-card border mx-1 bg-light border-dark p-2 my-2">
-		<div class="row">
-			<div class="col-3">
-				<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<?php
-						$now_month =  time();
-						$getMonth = strftime("%m", $now_month );
-						for ($i=1; $i <=12 ; $i++) { 
-							if($i != $getMonth){
-					?>
-						<a  
-							class="nav-link " 
-							id="pills-tab-import-mo{{$i}}" 
-							data-toggle="pill" 
-							href="#pills-mo{{$i}}" 
-							role="tab" 
-							aria-controls="pills-mo{{$i}}" 
-							aria-selected="true">
-							Tháng {{$i}}
-							<span class="badge badge-pill bg-white text-dark">
-							 1
-							</span>
-						</a>
-					<?php
-							}
-							else{
-					?>
-						<a  
-							class="nav-link active" 
-							id="pills-tab-import-mo{{$i}}" 
-							data-toggle="pill" 
-							href="#pills-mo{{$i}}" 
-							role="tab" 
-							aria-controls="pills-mo{{$i}}" 
-							aria-selected="true">
-							Tháng {{$i}}
-							<span class="badge badge-pill bg-white text-dark">
-							 1
-							</span>
-						</a>
-					<?php
-							}
-						}
-					 ?>					
+		<div class="tab-content" id="v-pills-tabContent">
+			<div class="tab-pane fade show active navbar-nav-scroll">
+				<div class="d-flex justify-content-between">
+					<span class="d-none d-sm-block text-dark font-weight-bold">
+						Các lô đã nhập vào tháng 12 :
+					</span>
 				</div>
-			</div>
-			<div class="col-9">
-				<div class="tab-content" id="v-pills-tabContent">
-			<?php
-					$now_month =  time();
-					$getMonth = strftime("%m", $now_month );
-					for ($i=1; $i <=12 ; $i++) { 
-						if($i < $getMonth)
-						{
-			?>
-					<div class="tab-pane fade" id="pills-mo{{$i}}" role="tabpanel" aria-labelledby="pills-tab-import-mo{{$i}}">
-						
-						<div class="d-flex justify-content-between">
-							<span class="d-none d-sm-block text-dark font-weight-bold">
-								Các lô đã nhập vào tháng {{$i}} :
-							</span>
-						</div>
-						<div class="mt-2">
-							<div class="rounded mt-1 border border-info p-1 d-flex flex-sm-row flex-column justify-content-between">
-								<div class="d-flex flex-row text-break text-wrap">
-									<div>
-										<img src="{{asset('public/media/img-icons/checked.png')}}" width="60">
-									</div>
-									<div class="mx-2">
-										<span><b>Mã Lô :</b> 0120211104</span>
-										<div>
-											<span><b>Ngày nhập :</b> 21/09/2021</span>
-										</div>
-										<div>
-											<span><b>Hết hạn :</b> 21/11/2021</span>
-											<a href="#"><u>Gia hạn</u></a>
-											<span class="bg-danger text-white px-1">
-												Đã hết hạn
-											</span>
-											<span class="bg-warning text-white px-1">
-												Sắp hết hạn
-											</span>
-										</div>
-										<div>
-											<span><b>Số lượng nhập :</b> 0 Trái</span>
-										</div>
-										<div>
-											<span><b>Giá nhập :</b> 50.000đ/Trái</span>
-										</div>
-									</div>
+				<div class="mt-2">
+					<div class="rounded mt-1 border border-info p-1 d-flex flex-sm-row flex-column justify-content-between">
+						<div class="d-flex flex-row text-break text-wrap">
+							<div>
+								<img src="{{asset('public/media/img-icons/checked.png')}}" width="60">
+							</div>
+							<div class="mx-2">
+								<span><b>Mã Lô :</b> 0120211104</span>
+								<div>
+									<span><b>Ngày nhập :</b> 21/09/2021</span>
 								</div>
-
-								<div class="mx-2 mt-3 text-break text-wrap">
-									<div class="d-flex flex-sm-column flex-row">
-										<div>
-											<button class="mt-2 mx-1 btn btn-danger">
-												Xóa
-											</button>
-										</div>
-										<div>
-											<button class="mt-2 mx-1 btn btn-warning">
-												Sửa
-											</button>
-										</div>
-										<div>
-											<button class="mt-2 mx-1 btn btn-primary">
-												Sửa
-											</button>
-										</div>
-									</div>
+								<div>
+									<span><b>Hết hạn :</b> 21/11/2021</span>
+									<span class="bg-danger text-white px-1">
+										Đã hết hạn
+									</span>
+									<span class="bg-warning text-white px-1">
+										Sắp hết hạn
+									</span>
+								</div>
+								<div>
+									<span><b>Số lượng nhập :</b> 0 Trái</span>
+								</div>
+								<div>
+									<span><b>Giá nhập :</b> 50.000đ/Trái</span>
+								</div>
+								<div>
+									<span><b>Nguồn nhập từ :</b> cửa hàng 123 ( địa chỉ 154/5 p4 , tp.HCM )</span>
 								</div>
 							</div>
-							<div class="rounded mt-1 border border-dark p-1 d-flex flex-sm-row flex-column justify-content-between">
-								<div class="d-flex flex-row text-break text-wrap">
-									<div>
-										<img src="{{asset('public/media/img-icons/done.png')}}" width="60">
-									</div>
-									<div class="mx-2">
-										<span><b>Mã Lô :</b> 0120211103</span>
-										<div>
-											<span><b>Ngày nhập :</b> 21/09/2021</span>
-										</div>
-										<div>
-											<span><b>Hết hạn :</b> 21/11/2021</span>
-										</div>
-										<div>
-											<span><b>Số lượng nhập :</b> 0 Trái</span>
-										</div>
-										<div>
-											<span><b>Giá nhập :</b> 50.000đ/Trái</span>
-										</div>
-									</div>
-								</div>
-							</div>						
 						</div>
 
-					</div>
-			<?php
-						}
-						elseif($i == $getMonth){
-			?>
-					<div class="tab-pane fade show active navbar-nav-scroll" id="pills-mo{{$i}}" role="tabpanel" aria-labelledby="pills-tab-import-mo{{$i}}">
-					
-						<div class="d-flex justify-content-between">
-							<span class="d-none d-sm-block text-dark font-weight-bold">
-								Các lô đã nhập vào tháng {{$i}} :
-							</span>
-						</div>
-						<div class="mt-2">
-							<div class="rounded mt-1 border border-info p-1 d-flex flex-sm-row flex-column justify-content-between">
-								<div class="d-flex flex-row text-break text-wrap">
-									<div>
-										<img src="{{asset('public/media/img-icons/checked.png')}}" width="60">
-									</div>
-									<div class="mx-2">
-										<span><b>Mã Lô :</b> 0120211104</span>
-										<div>
-											<span><b>Ngày nhập :</b> 21/09/2021</span>
-										</div>
-										<div>
-											<span><b>Hết hạn :</b> 21/11/2021</span>
-											<span class="bg-danger text-white px-1">
-												Đã hết hạn
-											</span>
-											<span class="bg-warning text-white px-1">
-												Sắp hết hạn
-											</span>
-										</div>
-										<div>
-											<span><b>Số lượng nhập :</b> 0 Trái</span>
-										</div>
-										<div>
-											<span><b>Giá nhập :</b> 50.000đ/Trái</span>
-										</div>
-										<div>
-											<span><b>Nguồn nhập từ :</b> cửa hàng 123 ( địa chỉ 154/5 p4 , tp.HCM )</span>
-										</div>
-									</div>
+						<div class="mx-2 mt-3 text-break text-wrap">
+							<div class="d-flex flex-sm-column flex-row">
+								<div>
+									<button class="mt-2 mx-1 btn btn-danger">
+										Xóa
+									</button>
 								</div>
-
-								<div class="mx-2 mt-3 text-break text-wrap">
-									<div class="d-flex flex-sm-column flex-row">
-										<div>
-											<button class="mt-2 mx-1 btn btn-danger">
-												Xóa
-											</button>
-										</div>
-										<div>
-											<button class="mt-2 mx-1 btn btn-warning">
-												Sửa
-											</button>
-										</div>
-										<div>
-											<button class="mt-2 mx-1 btn btn-primary">
-												Kết
-											</button>
-										</div>
-									</div>
+								<div>
+									<button class="mt-2 mx-1 btn btn-warning">
+										Sửa
+									</button>
+								</div>
+								<div>
+									<button class="mt-2 mx-1 btn btn-primary">
+										Kết
+									</button>
 								</div>
 							</div>
-							@for($j=0 ; $j<3 ; $j++)
-							<div class="rounded mt-1 border border-dark p-1 d-flex flex-sm-row flex-column justify-content-between">
-								<div class="d-flex flex-row text-break text-wrap">
-									<div>
-										<img src="{{asset('public/media/img-icons/done.png')}}" width="60">
-									</div>
-									<div class="mx-2">
-										<span><b>Mã Lô :</b> 0120211104</span>
-										<div>
-											<span><b>Ngày nhập :</b> 21/09/2021</span>
-										</div>
-										<div>
-											<span><b>Hết hạn :</b> 21/11/2021</span>
-										</div>
-										<div>
-											<span><b>Số lượng nhập :</b> 0 Trái</span>
-										</div>
-										<div>
-											<span><b>Giá nhập :</b> 50.000đ/Trái</span>
-										</div>
-										<div>
-											<span><b>Nguồn nhập từ :</b> cửa hàng 123 ( địa chỉ 154/5 p4 , tp.HCM )</span>
-										</div>
-										<div>
-											<span><b>Đã bán : </b> 50/50 Trái</span>
-										</div>
-										<div>
-											<span><b>Hủy : </b> 0/50 Trái</span>
-										</div>
-										<div>
-											<span><b>Ghi chú : </b></span>
-										</div>
-									</div>
-								</div>
-							</div>
-							@endfor				
 						</div>
 					</div>
-			<?php
-						}
-						elseif($i > $getMonth){
-			?>
-					<div class="tab-pane fade" id="pills-mo{{$i}}" role="tabpanel" aria-labelledby="pills-tab-import-mo{{$i}}">
-						Chưa có dữ liệu trong tháng {{$i}} sắp tới!
+					@for($j=0 ; $j<3 ; $j++)
+					<div class="rounded mt-1 border border-dark p-1 d-flex flex-sm-row flex-column justify-content-between">
+						<div class="d-flex flex-row text-break text-wrap">
+							<div>
+								<img src="{{asset('public/media/img-icons/done.png')}}" width="60">
+							</div>
+							<div class="mx-2">
+								<span><b>Mã Lô :</b> 0120211104</span>
+								<div>
+									<span><b>Ngày nhập :</b> 21/09/2021</span>
+								</div>
+								<div>
+									<span><b>Hết hạn :</b> 21/11/2021</span>
+								</div>
+								<div>
+									<span><b>Số lượng nhập :</b> 0 Trái</span>
+								</div>
+								<div>
+									<span><b>Giá nhập :</b> 50.000đ/Trái</span>
+								</div>
+								<div>
+									<span><b>Nguồn nhập từ :</b> cửa hàng 123 ( địa chỉ 154/5 p4 , tp.HCM )</span>
+								</div>
+								<div>
+									<span><b>Đã bán : </b> 50/50 Trái</span>
+								</div>
+								<div>
+									<span><b>Hủy : </b> 0/50 Trái</span>
+								</div>
+								<div>
+									<span><b>Ghi chú : </b></span>
+								</div>
+							</div>
+						</div>
 					</div>
-			<?php
-						}
-					}
-			?>
+					@endfor				
 				</div>
 			</div>
 		</div>
