@@ -97,7 +97,7 @@
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item {{ ( Request::segment(1) === 'category-product' || Request::segment(1) === 'brand-tag' ) ? 'active' : null }}">
+            <li class="nav-item {{ ( Request::segment(1) === 'category-product' || Request::segment(1) === 'brand-tag' || Request::segment(1) === 'manage-product' ) ? 'active' : null }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBrand"
                     aria-expanded="true" aria-controls="collapseBrand">
                     <i class="fas fa-boxes"></i>
@@ -442,7 +442,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Bản quyền &copy; 141Fruits bởi <a target="_blank" href="https://www.facebook.com/MrroyalTechnology">MRROYAL</a> <script type="text/javascript">var year = new Date();document.write(year.getFullYear());</script></span>
+                        <span>Bản quyền &copy; 141Fruits bởi <a target="_blank" href="https://www.facebook.com/MrroyalVietnam">MRROYAL</a> <script type="text/javascript">var year = new Date();document.write(year.getFullYear());</script></span>
                     </div>
                 </div>
             </footer>

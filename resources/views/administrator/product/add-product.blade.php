@@ -136,7 +136,6 @@ Session::put('mess_success', null);
 								data-bs-mess-err="mess_err_add_product_img{{$i}}"
 	                    		data-bs-img-preview="preview_img_{{$i}}"
 	                    		data-link-zoom-img="link_preview_img_{{$i}}"
-	                    		onchange="PreviewUploadImage(this)" 
 	                    		>
                     	</div>
                     @endfor 

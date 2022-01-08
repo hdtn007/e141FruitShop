@@ -458,6 +458,18 @@ function auto_change_text_dvt(input_text)
     }
 }
 
+function auto_change_text_dvt_update(input_text)
+{
+    var dvt = document.getElementsByClassName('dvt__dvt');
+
+    var number = document.getElementById('input_update_numberunit_product');
+    var unit = document.getElementById('input_update_unit_product');
+
+    for(var i = 0; i < dvt.length; i++){
+    dvt[i].innerText= number.value +' '+ unit.value;    // Change the content
+    }
+}
+
 // thay đổi thông báo chọn ngày tháng năm
 function auto_change_text_ddmmyy(input_text)
 {

@@ -23,6 +23,13 @@ use Illuminate\Support\Facades\Route;
 // _____________ ╚██████╔╝███████║███████╗██║  ██║ _______________________
 // _____________  ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝ _______________________
 
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ TÀI KHOẢN ADMIN ______________
+// ___________________________________________________________________________
+
+// SHOW TRANG ĐĂNG NHẬP	
 Route::get('/administrator',
 		   'Admin\AdminController@index'); // ADMIN LOGIN LAUOUT
 
@@ -44,6 +51,35 @@ Route::get('/logout-dashboard',
 
 // XÁC MINH THÔNG TIN TÀI KHOẢN
 
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ TÀI KHOẢN NGƯỜI DÙNG ______________
+// ___________________________________________________________________________
+
+// SHOW TRANG ĐĂNG NHẬP	
+Route::get('/login',
+		   'Customer\CustomerController@login_user'); // ADMIN LOGIN LAUOUT
+
+// ĐĂNG NHẬP
+// Route::post('/admin-dashboard',
+// 		    'Admin\AdminController@login_dashboard'); 
+
+
+// ĐĂNG XUẤT
+// Route::get('/logout-dashboard',
+// 		   'Admin\AdminController@logout_dashboard'); 
+
+
+// TẠO TÀI KHOẢN
+Route::get('/signup',
+		   'Customer\CustomerController@signup_user'); // Show trang đăng ký
+
+
+// CẬP NHẬT TÀI KHOẢN
+
+
+// XÁC MINH THÔNG TIN TÀI KHOẢN
 
 
 /*
@@ -57,43 +93,81 @@ Route::get('/logout-dashboard',
 */
 
 Route::get('/', 
-		   'Customer\HomeController@index'); // TRANG CHỦ
+		   'Customer\HomePage@index'); // TRANG CHỦ
 Route::get('/home', 
-		   'Customer\HomeController@index'); // TRANG CHỦ
+		   'Customer\HomePage@index'); // TRANG CHỦ
 
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ DETAIL PRODUCT PAGE ( CHI TIẾT SẢN PHẨM ) ______________
+// ___________________________________________________________________________
+
+Route::get('/meta_product={url_product}',
+		   'Customer\Product@index'); // chi tiết sản phẩm
+
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ PRODUCT CATEGORY ( SẢN PHẨM THEO PHÂN LOẠI ) ___________
+// ___________________________________________________________________________
 
  
-// Route::get('store', 'Customer\HomeController@index'); // cửa hàng
+Route::get('/store/category={category_url}', 'Customer\ProductCategory@index'); // cửa hàng theo phân loại danh mục
 
-//Route::get('/home', 'Customer\HomeController@index'); // loại sản phẩm
+Route::get('/store/country={country_url}', 'Customer\ProductCategory@show_by_country'); // cửa hàng theo phân loại quốc gia
 
-//Route::get('/home', 'Customer\HomeController@index'); // chi tiết sản phẩm
+Route::get('/store/all', 'Customer\ProductCategory@show_all_product');
+Route::get('/store/all_fruits', 'Customer\ProductCategory@show_all_fruits');
+Route::get('/store/all_foods', 'Customer\ProductCategory@show_all_foods');
+//
 
-//Route::get('/home', 'Customer\HomeController@index'); // giỏ hàng + thanh toán
 
-//Route::get('/home', 'Customer\HomeController@index'); // Check đơn hàng đã đặt
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ CART ( GIỎ HÀNG ) ___________
+// ___________________________________________________________________________
 
-// Route::get('/home', 'Customer\HomeController@index'); // Đăng nhập
+Route::get('/cart', 'Customer\Cart@index'); // giỏ hàng
 
-// Route::get('/home', 'Customer\HomeController@index'); // Tạo tài khoản
 
-// Route::get('/home', 'Customer\HomeController@index'); // Shop Xu
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ BLOG POST ( MẸO ) ___________
+// ___________________________________________________________________________
 
-// Route::get('/home', 'Customer\HomeController@index'); // Mã Khuyến Mãi
+Route::get('/facts', 'Customer\HomePage@index'); // Check đơn hàng đã đặt
 
-// Route::get('/home', 'Customer\HomeController@index'); // Liên Hệ
 
-// Route::get('/home', 'Customer\HomeController@index'); // Chính Sách
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ INFORMATION ( THÔNG TIN LIÊN HỆ ) ___________
+// ___________________________________________________________________________
 
-// Route::get('/home', 'Customer\HomeController@index'); // Tài Khoản Cá Nhân
+Route::get('/contact', 'Customer\HomePage@index');
 
-// Route::get('/home', 'Customer\HomeController@index'); // Danh Sách Yêu Thích
+// Route::get('/home', 'Customer\HomePage@index'); // Tạo tài khoản
 
-// Route::get('/home', 'Customer\HomeController@index'); // Bài Viết
+// Route::get('/home', 'Customer\HomePage@index'); // Shop Xu
 
-// Route::get('/home', 'Customer\HomeController@index'); // Loại Bài Viết
+// Route::get('/home', 'Customer\HomePage@index'); // Mã Khuyến Mãi
 
-// Route::get('/home', 'Customer\HomeController@index'); // Chi tiết bài viết
+// Route::get('/home', 'Customer\HomePage@index'); // Liên Hệ
+
+// Route::get('/home', 'Customer\HomePage@index'); // Chính Sách
+
+// Route::get('/home', 'Customer\HomePage@index'); // Tài Khoản Cá Nhân
+
+// Route::get('/home', 'Customer\HomePage@index'); // Danh Sách Yêu Thích
+
+// Route::get('/home', 'Customer\HomePage@index'); // Bài Viết
+
+// Route::get('/home', 'Customer\HomePage@index'); // Loại Bài Viết
+
+// Route::get('/home', 'Customer\HomePage@index'); // Chi tiết bài viết
 
 //_____________________________________________________________________
 // ___________  █████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗ ________________

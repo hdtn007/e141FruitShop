@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Home | 141Fruits</title>
+    <title>TraiCay141 - Nhà phân phối trái cây, trái cây nhập khẩu cao cấp | Hệ thống cửa hàng Trái Cây 141 Tp.HCM </title>
     <link href="{{asset('public/customer/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/customer/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/customer/css/prettyPhoto.css')}}" rel="stylesheet">
@@ -73,9 +73,9 @@
 							<ul class="nav navbar-nav">
 								<li><a href="#"><i class="fa fa-user"></i> Tài khoản</a></li>
 								<li><a href="#"><i class="fa fa-heart"></i> Yêu thích</a></li>
-								<li><a href="#" style="color:#CA6229;"><img src="{{asset('public/media/img-icons/money.png')}}" alt="" /> 100000 xu</a></li>
-								<li><a href="#"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
-								<li><a href="#"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+								<li><a href="#" style="color:#CA6229;"><img src="{{asset('public/media/img-icons/money.png')}}" alt="" /> 0 xu</a></li>
+								<li><a href="{{URL::to('/cart')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
+								<li><a href="{{URL::to('/login')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
 							</ul>
 						</div>
 					</div>
@@ -97,14 +97,14 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="{{url('/home')}}" class="active"><i class="fa fa-home" aria-hidden="true"></i> Trang Chủ</a></li>
-								<li class="dropdown"><a href="#"><i class="fa fa-shopping-cart"></i> Cửa Hàng <i class="fa fa-angle-down"></i></a>
+								<li><a href="{{URL::to('/home')}}" class="{{ Request::segment(1) === 'home' ? 'active' : null }}"><i class="fa fa-home" aria-hidden="true"></i> Trang Chủ</a></li>
+								<li class="dropdown {{ Request::segment(1) === 'store' ? 'shadow-sm' : null }}"><a href="{{URL::to('/store/all')}}"><i class="fa fa-shopping-cart"></i> Cửa Hàng <i class="fa fa-angle-down"></i></a>
                     <ul role="menu" class="sub-menu">
-                        <li><a class="active" href="blog.html">141Fruit</a></li>
-                        <li><a href="blog-single.html">141Food</a></li>
+                        <li><a class="{{ Request::segment(2) === 'all_fruits' ? 'active' : null }}" href="{{URL::to('/store/all_fruits')}}">141Fruit</a></li>
+                        <li><a class="{{ Request::segment(2) === 'all_foods' ? 'active' : null }}" href="{{URL::to('/store/all_foods')}}">141Food</a></li>
                     </ul></li>
-								<li class="dropdown"><a href="#"><i class="fa fa-coffee"></i> Mẹo</a></li>
-								<li class="dropdown"><a href="#"><i class="fa fa-comments"></i> Liên Hệ</a></li>
+								<li class="dropdown"><a href="{{URL::to('/home')}}"><i class="fa fa-coffee"></i> Mẹo</a></li>
+								<li class="dropdown"><a href="{{URL::to('/home')}}"><i class="fa fa-comments"></i> Liên Hệ</a></li>
 							</ul>
 						</div>
 					</div>
@@ -255,7 +255,7 @@
 			<div class="container">
 				<div class="row">
 					<p class="pull-left">Copyright &copy; <script type="text/javascript">var year = new Date();document.write(year.getFullYear());</script> 141Fruits </p>
-					<p class="pull-right">By <span><a target="_blank" href="https://www.facebook.com/MrroyalTechnology">MRROYAL</a></span></p>
+					<p class="pull-right">By <span><a target="_blank" href="https://www.facebook.com/MrroyalVietnam">MRROYAL</a></span></p>
 				</div>
 			</div>
 		</div>

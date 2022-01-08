@@ -75,111 +75,63 @@
         <div class="left-sidebar">
           <h2>Loại Sản Phẩm</h2>
           <div class="panel-group category-products" id="category-product"><!--category-productsr-->
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#category-product" href="#gioqua">
-                    <span class="badge pull-right"><i class="fa fa-plus"></i></span>
-                    Giỏ Quà
-                  </a>
-                </h4>
-              </div>
-              <div id="gioqua" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <ul>
-                    <li><a href="#">Giỏ Quà Tết </a></li>
-                    <li><a href="#">Giỏ Quà Sức Khỏe </a></li>
-                    <li><a href="#">Giỏ Quà Tình Yêu </a></li>
-                    <li><a href="#">Giỏ Quà Khai Trương</a></li>
-                    <li><a href="#">Giỏ Quà Sinh Nhật </a></li>
-                    <li><a href="#">Giỏ Quà Tri Ân </a></li>
-                  </ul>
-                </div>
+            @foreach($list_category as $key_ca_pro1 => $cate_pro1)
+            <?php
+            $k = 0;
+            foreach ($list_category as $key_test => $test) {
+              if($test->category_sub == $cate_pro1->category_id)
+              {
+                $k = $k+1;
+              }
+            }
+          ?>
+          @if($cate_pro1->category_sub == 0)
+          @if($k !=0)
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                
+                <a data-toggle="collapse" data-parent="#category-product" href="#category{{$cate_pro1->category_id}}">
+                  <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                  {{$cate_pro1->category_name}}
+                </a>
+              </h4>
+            </div>
+            
+            <div id="category{{$cate_pro1->category_id}}" class="panel-collapse collapse">
+              <div class="panel-body">
+                <ul>
+                  @foreach($list_category as $key_ca_pro2 => $cate_pro2)
+                  @if($cate_pro2->category_sub == $cate_pro1->category_id)
+                  <li><a href="{{URL::to('/store/category='.$cate_pro2->category_url)}}">{{$cate_pro2->category_name}} </a></li>
+                  @endif
+                  @endforeach
+                </ul>
               </div>
             </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#category-product" href="#raucuaqua">
-                    <span class="badge pull-right"><i class="fa fa-plus"></i></span>
-                    Rau Củ Quả
-                  </a>
-                </h4>
-              </div>
-              <div id="raucuaqua" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <ul>
-                    <li><a href="#">Rau cải</a></li>
-                    <li><a href="#">Nấm</a></li>
-                    <li><a href="#">Các loại củ</a></li>
-                  </ul>
-                </div>
-              </div>
+          </div>
+          @else
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title"><a href="{{URL::to('/store/category='.$cate_pro1->category_url)}}">{{$cate_pro1->category_name}}</a></h4>
             </div>
+          </div>
+          @endif
+          @endif
+          <?php
+          $k = 0;
+        ?>
+        @endforeach
 
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#category-product" href="#thucuong">
-                    <span class="badge pull-right"><i class="fa fa-plus"></i></span>
-                    Thức Uống
-                  </a>
-                </h4>
-              </div>
-              <div id="thucuong" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <ul>
-                    <li><a href="#">Trà các loại</a></li>
-                    <li><a href="#">Sửa trái cây</a></li>
-                    <li><a href="#">Nước ép trái cây</a></li>
-                    <li><a href="#">Thức uống có gas</a></li>
-                    <li><a href="#">Thức uống có lên men</a></li>
-
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title"><a href="#">Trái Cây Tươi</a></h4>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title"><a href="#">Trái Cây Cắt</a></h4>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title"><a href="#">Trái Cây Sấy</a></h4>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title"><a href="#">Gia Vị & Nguyên Liệu Nấu Ăn</a></h4>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title"><a href="#">Ngũ Cốc & Hạt</a></h4>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title"><a href="#">Thịt & Thủy Hải Sản</a></h4>
-              </div>
-            </div>
           </div><!--/category-products-->
 
           <div class="brands_products"><!--brands_products-->
             <h2>Xuất Xứ</h2>
             <div class="brands-name">
               <ul class="nav nav-pills nav-stacked">
-                <li><a href="#"> <span class="pull-right">(50)</span>Trong Nước</a></li>
-                <li><a href="#"> <span class="pull-right">(56)</span>Hàn Quốc</a></li>
-                <li><a href="#"> <span class="pull-right">(27)</span>Mỹ</a></li>
-                <li><a href="#"> <span class="pull-right">(32)</span>Nhật Bản</a></li>
-                <li><a href="#"> <span class="pull-right">(5)</span>Úc</a></li>
+                @foreach($list_country as $key_country => $count_pro)
+                <li><a href="{{URL::to('/store/country='.$count_pro->country_url)}}"> <span class="pull-right">({{$count_pro->count_country}})</span>{{$count_pro->country_name}}</a></li>
+                @endforeach
               </ul>
             </div>
           </div><!--/brands_products-->
@@ -192,17 +144,21 @@
       </div>
 
       <div class="col-sm-9 padding-right">
-        <div class="features_items"><!--features_items-->
-          <h2 class="title text-center">Mới & Khuyến mãi</h2>
 
+        <!--features_items-->
+        <div class="features_items">
+          <h2 class="title text-center">Mới & Khuyến mãi</h2>
+          @foreach($list_new as $key => $new_pro)
           <div class="col-sm-4">
             <div class="product-image-wrapper">
               <div class="single-products">
                 <div class="productinfo text-center">
-                  <img src="{{asset('public/media/img-product/chuoi.png')}}" alt="" />
+                  <a href="{{URL::to('/meta_product='.$new_pro->product_url)}}">
+                    <img src="{{asset('public/media/img-product/'.$new_pro->product_img1)}}" alt="{{$new_pro->product_name}}" />
+                  </a>
                   <!-- nếu có giảm giá sản phẩm thì hiển thị line-through -->
-                  <h2>100.000đ<span>/KG</span></h2>
-                  <p>Trái cây ngon , Trái cây ngon | Trái cây ngon - Trái cây ngon</p>
+                  <h2>{{number_format($new_pro->product_sell_price,0,",",".")}}đ<span>/{{$new_pro->product_number_unit <= 1 ? '': $new_pro->product_number_unit}}{{$new_pro->product_unit}}</span></h2>
+                  <p style="height: 3.5rem;" class="text-uppercase" title="{{$new_pro->product_name}}">{{$new_pro->product_name}}</p>
                   <div>
                     <ul class="nav nav-pills nav-justified">
                       <li title="Yêu thích">
@@ -216,25 +172,31 @@
                     </ul>
                   </div>
                 </div>
-                <img src="{{asset('public/media/img-icons/new.png')}}" class="new" alt="" />
+                <img width="42" src="{{asset('public/media/img-icons/new-tag0.png')}}" class="new" alt="" />
               </div>
               <div class="choose">
                 <ul class="nav nav-pills nav-justified">
-                  <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">0 <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
-                  <li title="Xem chi tiết sản phẩm"><a href="#"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm</a></li>
+                  <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;">
+                    <a class="count-like">{{$new_pro->product_like}} <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a>
+                  </li>
+                  <li title="Xem chi tiết sản phẩm">
+                    <a href="{{URL::to('/meta_product='.$new_pro->product_url)}}"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm</a>
+                  </li>
                 </ul>
               </div>
             </div>
           </div>
+          @endforeach
 
+          @foreach($list_sale as $keys => $sale_pro)
           <div class="col-sm-4">
             <div class="product-image-wrapper">
               <div class="single-products">
                 <div class="productinfo text-center">
-                  <img src="{{asset('public/media/img-product/chuoi.png')}}" alt="" />
+                  <img src="{{asset('public/media/img-product/'.$sale_pro->product_img1)}}" alt="" />
                   <!-- nếu có giảm giá sản phẩm thì hiển thị line-through -->
-                  <h2><del>100.000đ</del><span><del>/KG</del></span></h2>
-                  <p>Trái cây ngon , Trái cây ngon | Trái cây ngon - Trái cây ngon</p>
+                  <h2><del>{{number_format($sale_pro->product_sell_price,0,",",".")}}đ</del><span><del>/{{$sale_pro->product_number_unit <= 1 ? '': $sale_pro->product_number_unit}}{{$sale_pro->product_unit}}</del></span></h2>
+                  <p style="height: 3.5rem;">{{$sale_pro->product_name}}</p>
                   <div>
                     <ul class="nav nav-pills nav-justified">
                       <li title="Yêu thích"><center>
@@ -247,9 +209,11 @@
                 </div>
                 <div class="product-overlay">
                   <div class="overlay-content">
-                    <img src="{{asset('public/media/img-product/chuoi.png')}}" alt="" />
-                    <h2>100.000đ<span>/KG</span></h2>
-                    <p>Trái cây ngon , Trái cây ngon | Trái cây ngon - Trái cây ngon</p>
+                    <a href="{{URL::to('/meta_product='.$sale_pro->product_url)}}">
+                      <img src="{{asset('public/media/img-product/'.$sale_pro->product_img1)}}" alt="{{$sale_pro->product_name}}" />
+                    </a>
+                    <h2>{{number_format($sale_pro->product_sale_price,0,",",".")}}đ<span>/{{$sale_pro->product_number_unit <= 1 ? '': $sale_pro->product_number_unit}}{{$sale_pro->product_unit}}</span></h2>
+                    <p style="height: 3.5rem;" title="{{$sale_pro->product_name}}">{{$sale_pro->product_name}}</p>
                     <div>
                       <ul class="nav nav-pills nav-justified">
                         <li title="Yêu thích"><center> 
@@ -262,18 +226,24 @@
 
                   </div>
                 </div>
-                <img src="{{asset('public/media/img-icons/sale.png')}}" class="new" alt="" />
+                <a href="">
+                  <img width="42" src="{{asset('public/media/img-icons/sale-tag1.png')}}" class="new" alt="img_sale" />
+                </a>
               </div>
               <div class="choose">
                 <ul class="nav nav-pills nav-justified">
-                  <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">0 <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
-                  <li title="Xem chi tiết sản phẩm"><a href="#"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm</a></li>
+                  <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">{{$new_pro->product_like}} <img src="{{asset('public/media/img-icons/heart.png')}}" alt="img_like" /></a>
+                  </li>
+                  <li title="Xem chi tiết sản phẩm">
+                    <a href="{{URL::to('/meta_product='.$new_pro->product_url)}}"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm
+                    </a></li>
                 </ul>
               </div>
             </div>
           </div>
-
-        </div><!--features_items-->
+          @endforeach
+        </div>
+        <!--features_items-->
 
         <div class="category-tab"><!--category-tab-->
           <div class="col-sm-12">
@@ -286,78 +256,82 @@
           <div class="tab-content">
             <!-- slide sản phẩm hiển thị -->
             <div class="tab-pane fade active in" id="tab1" >
-
+              @foreach($list_sold as $keyss => $top_sold)
               <div class="col-sm-3">
-                  <div class="product-image-wrapper">
-                    <div class="single-products">
-                      <div class="productinfo text-center">
-                        <img src="{{asset('public/media/img-product/chuoi.png')}}" alt="" />
-                        <!-- nếu có giảm giá sản phẩm thì hiển thị line-through -->
-                        <h2 style="text-decoration: /*line-through;*/">100.000đ<span>/KG</span></h2>
-                        <p>Trái cây ngon , Trái cây ngon | Trái cây ngon - Trái cây ngon</p>
+                <div class="product-image-wrapper">
+                  <div class="single-products">
+                    <div class="productinfo text-center">
+                      <a href="{{URL::to('/meta_product='.$top_sold->product_url)}}">
+                       <img src="{{asset('public/media/img-product/'.$top_sold->product_img1)}}" alt="{{$top_sold->product_name}}" />
+                     </a>
+                     <!-- nếu có giảm giá sản phẩm thì hiển thị line-through -->
+                     <h2 style="text-decoration: /*line-through;*/">{{number_format($top_sold->product_sell_price,0,",",".")}}đ<span>/{{$top_sold->product_number_unit <= 1 ? '': $top_sold->product_number_unit}}{{$top_sold->product_unit}}</span></h2>
+                      <p>{{$top_sold->product_name}}</p>
 
 
-                        <div class="choose1">
-                          <ul class="nav nav-pills nav-justified">
-                            <li title="Yêu thích"><center>
-                              <a class="btn btn-default product-like product-liked">
-                                <i class="fa fa-heart"></i>
-                              </a></center></li>
+                      <div class="choose1">
+                        <ul class="nav nav-pills nav-justified">
+                          <li title="Yêu thích"><center>
+                            <a class="btn btn-default product-like product-liked">
+                              <i class="fa fa-heart"></i>
+                            </a></center></li>
                             <li title="Thêm vào giỏ hàng"><center><a class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i></a></center></li>
                           </ul>
                         </div>
                         <div class="choose">
                           <ul class="nav nav-pills nav-justified">
-                            <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">0 <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
-                            <li title="Xem chi tiết sản phẩm"><a href="#"><i class="fa fa-plus-square"></i></a></li>
+                            <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">{{$top_sold->product_like}} <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
+                            <li title="Xem chi tiết sản phẩm"><a href="{{URL::to('/meta_product='.$top_sold->product_url)}}"><i class="fa fa-plus-square"></i></a></li>
                           </ul>
                         </div>
-
                       </div>
                     </div>
                   </div>
-              </div>
+                </div>
+              @endforeach
             </div>
 
             <!-- slide sản phẩm hiển thị -->
             <div class="tab-pane fade" id="tab2" >
-
+              @foreach($list_like as $keysss => $top_like)
               <div class="col-sm-3">
-                  <div class="product-image-wrapper">
-                    <div class="single-products">
-                      <div class="productinfo text-center">
-                        <img src="{{asset('public/media/img-product/chuoi.png')}}" alt="" />
-                        <!-- nếu có giảm giá sản phẩm thì hiển thị line-through -->
-                        <h2 style="text-decoration: /*line-through;*/">100.000đ<span>/KG</span></h2>
-                        <p>Trái cây ngon , Trái cây ngon | Trái cây ngon - Trái cây ngon</p>
+                <div class="product-image-wrapper">
+                  <div class="single-products">
+                    <div class="productinfo text-center">
+                      <a href="{{URL::to('/meta_product='.$top_like->product_url)}}">
+                       <img src="{{asset('public/media/img-product/'.$top_like->product_img1)}}" alt="{{$top_like->product_name}}" />
+                     </a>
+                     <!-- nếu có giảm giá sản phẩm thì hiển thị line-through -->
+                     <h2 style="text-decoration: /*line-through;*/">{{number_format($top_like->product_sell_price,0,",",".")}}đ<span>/{{$top_like->product_number_unit <= 1 ? '': $top_like->product_number_unit}}{{$top_like->product_unit}}</span></h2>
+                      <p>{{$top_like->product_name}}</p>
 
 
-                        <div class="choose1">
-                          <ul class="nav nav-pills nav-justified">
-                            <li title="Yêu thích"><center>
-                              <a class="btn btn-default product-like product-liked">
-                                <i class="fa fa-heart"></i>
-                              </a></center></li>
+                      <div class="choose1">
+                        <ul class="nav nav-pills nav-justified">
+                          <li title="Yêu thích"><center>
+                            <a class="btn btn-default product-like product-liked">
+                              <i class="fa fa-heart"></i>
+                            </a></center></li>
                             <li title="Thêm vào giỏ hàng"><center><a class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i></a></center></li>
                           </ul>
                         </div>
                         <div class="choose">
                           <ul class="nav nav-pills nav-justified">
-                            <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">0 <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
-                            <li title="Xem chi tiết sản phẩm"><a href="#"><i class="fa fa-plus-square"></i></a></li>
+                            <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">{{$top_like->product_like}} <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
+                            <li title="Xem chi tiết sản phẩm"><a href="{{URL::to('/meta_product='.$top_like->product_url)}}"><i class="fa fa-plus-square"></i></a></li>
                           </ul>
                         </div>
-
                       </div>
                     </div>
                   </div>
-              </div>
+                </div>
+              @endforeach
             </div>
 
             <!-- slide sản phẩm hiển thị -->
             <div class="tab-pane fade" id="tab3" >
 
-              <div class="col-sm-3">
+              {{-- <div class="col-sm-3">
                   <div class="product-image-wrapper">
                     <div class="single-products">
                       <div class="productinfo text-center">
@@ -386,7 +360,8 @@
                       </div>
                     </div>
                   </div>
-              </div>
+              </div> --}}
+
             </div>
 
           </div>
@@ -398,15 +373,18 @@
             <div class="carousel-inner">
               <!-- item 1 -->
               <div class="item active">
-
+                @foreach($list_other as $key4 => $other_pro1)
+                @if($key4<3)
                 <div class="col-sm-4">
                   <div class="product-image-wrapper">
                     <div class="single-products">
                       <div class="productinfo text-center">
-                        <img src="{{asset('public/media/img-product/chuoi.png')}}" alt="" />
+                        <a href="{{URL::to('/meta_product='.$other_pro1->product_url)}}">
+                          <img src="{{asset('public/media/img-product/'.$other_pro1->product_img1)}}" alt="{{$other_pro1->product_name}}" />
+                        </a>
                         <!-- nếu có giảm giá sản phẩm thì hiển thị line-through -->
-                        <h2 style="text-decoration: /*line-through;*/">100.000đ<span>/KG</span></h2>
-                        <p>Trái cây ngon , Trái cây ngon | Trái cây ngon - Trái cây ngon</p>
+                        <h2 style="text-decoration: /*line-through;*/">{{number_format($other_pro1->product_sell_price,0,",",".")}}đ<span>/{{$other_pro1->product_number_unit <= 1 ? '': $other_pro1->product_number_unit}}{{$other_pro1->product_unit}}</span></h2>
+                        <p title="{{$other_pro1->product_name}}">{{$other_pro1->product_name}}</p>
                         <div>
                           <ul class="nav nav-pills nav-justified">
                             <li title="Yêu thích"><center>
@@ -420,24 +398,29 @@
                     </div>
                     <div class="choose">
                       <ul class="nav nav-pills nav-justified">
-                        <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">0 <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
-                        <li title="Xem chi tiết sản phẩm"><a href="#"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm</a></li>
+                        <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">{{$other_pro1->product_like}} <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
+                        <li title="Xem chi tiết sản phẩm"><a href="{{URL::to('/meta_product='.$other_pro1->product_url)}}"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm</a></li>
                       </ul>
                     </div>
                   </div>
                 </div>
-
+                @endif
+                @endforeach
               </div>
               <!-- item 2 -->
               <div class="item">
+                @foreach($list_other as $key5 => $other_pro2)
+                @if($key5>=3)
                 <div class="col-sm-4">
                   <div class="product-image-wrapper">
                     <div class="single-products">
                       <div class="productinfo text-center">
-                        <img src="{{asset('public/media/img-product/chuoi.png')}}" alt="" />
+                        <a href="{{URL::to('/meta_product='.$other_pro2->product_url)}}">
+                          <img src="{{asset('public/media/img-product/'.$other_pro2->product_img1)}}" alt="{{$other_pro2->product_name}}" />
+                        </a>
                         <!-- nếu có giảm giá sản phẩm thì hiển thị line-through -->
-                        <h2 style="text-decoration: /*line-through;*/">100.000đ<span>/KG</span></h2>
-                        <p>Trái cây ngon , Trái cây ngon | Trái cây ngon - Trái cây ngon</p>
+                        <h2 style="text-decoration: /*line-through;*/">{{number_format($other_pro2->product_sell_price,0,",",".")}}đ<span>/{{$other_pro2->product_number_unit <= 1 ? '': $other_pro2->product_number_unit}}{{$other_pro2->product_unit}}</span></h2>
+                        <p title="{{$other_pro2->product_name}}">{{$other_pro2->product_name}}</p>
                         <div>
                           <ul class="nav nav-pills nav-justified">
                             <li title="Yêu thích"><center>
@@ -451,12 +434,14 @@
                     </div>
                     <div class="choose">
                       <ul class="nav nav-pills nav-justified">
-                        <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">0 <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
-                        <li title="Xem chi tiết sản phẩm"><a href="#"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm</a></li>
+                        <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">{{$other_pro2->product_like}} <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
+                        <li title="Xem chi tiết sản phẩm"><a href="{{URL::to('/meta_product='.$other_pro2->product_url)}}"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm</a></li>
                       </ul>
                     </div>
                   </div>
                 </div>
+                @endif
+                @endforeach
               </div>
 
             </div>

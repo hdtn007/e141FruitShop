@@ -28,12 +28,6 @@ class AdminController extends Controller
         return view('admin-login-layout');
     }
 
-    public function show_dashboard()
-    {
-        $this->AuthLogin();
-        return view('administrator.admin-dashboard');
-    }
-
     public function login_dashboard(Request $request) // xử lý đăng nhập admin
     {
 
@@ -52,6 +46,12 @@ class AdminController extends Controller
             Session::put('message_box', 'Email hoặc mật khẩu chưa đúng. Vui lòng kiểm tra lại!');
             return Redirect::to('/administrator');
         }
+    }
+
+    public function show_dashboard()
+    {
+        $this->AuthLogin();
+        return view('administrator.admin-dashboard');
     }
 
     public function logout_dashboard() // xử lý đăng xuất admin

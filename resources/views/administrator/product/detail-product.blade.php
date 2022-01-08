@@ -106,7 +106,7 @@
             	</div>
             	<div class="mt-2 info-items">
             		<span class="text-primary font-weight-bold">Thương hiệu : </span> 
-            		{{$get_brand != null ? ''.$get_brand.'':'Unknown!'}}
+            		{{$get_brand != null ? ''.$get_brand->brand_name.'':'Unknown!'}}
             	</div>
             	<div class="mt-2">
             		<span class="text-primary font-weight-bold">Giá nhập : </span> 

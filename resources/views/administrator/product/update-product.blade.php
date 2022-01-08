@@ -225,17 +225,52 @@ Session::put('mess_success', null);
                    		 </div>
 
                    		<div>
-                   			@for($i=1 ; $i <=5 ; $i++)
                     		<input 
-	                    		id="input_update_img{{$i}}_product" 
+	                    		id="input_update_img1_product" 
 	                    		hidden type="file" 
 	                    		accept="image/*"
-	                    		name="input_update_img{{$i}}_product"
-	                    		data-bs-img-preview="preview_img_{{$i}}"
-	                    		data-link-zoom-img="link_preview_img_{{$i}}"
+	                    		name="input_update_img1_product"
+	                    		data-bs-img-preview="preview_img_1"
+	                    		data-link-zoom-img="link_preview_img_1"
 	                    		onchange="PreviewUploadImage(this)" 
 	                    		>
-	                    	@endfor
+	                    	<input 
+	                    		id="input_update_img2_product" 
+	                    		hidden type="file" 
+	                    		accept="image/*"
+	                    		name="input_update_img2_product"
+	                    		data-bs-img-preview="preview_img_2"
+	                    		data-link-zoom-img="link_preview_img_2"
+	                    		onchange="PreviewUploadImage(this)" 
+	                    		>
+	                    	<input 
+	                    		id="input_update_img3_product" 
+	                    		hidden type="file" 
+	                    		accept="image/*"
+	                    		name="input_update_img3_product"
+	                    		data-bs-img-preview="preview_img_3"
+	                    		data-link-zoom-img="link_preview_img_3"
+	                    		onchange="PreviewUploadImage(this)" 
+	                    		>
+	                    	<input 
+	                    		id="input_update_img4_product" 
+	                    		hidden type="file" 
+	                    		accept="image/*"
+	                    		name="input_update_img4_product"
+	                    		data-bs-img-preview="preview_img_4"
+	                    		data-link-zoom-img="link_preview_img_4"
+	                    		onchange="PreviewUploadImage(this)" 
+	                    		>
+
+	                    	<input 
+	                    		id="input_update_img5_product" 
+	                    		hidden type="file" 
+	                    		accept="image/*"
+	                    		name="input_update_img5_product"
+	                    		data-bs-img-preview="preview_img_5"
+	                    		data-link-zoom-img="link_preview_img_5"
+	                    		onchange="PreviewUploadImage(this)" 
+	                    		>
                     	</div>
 
                     </div>
@@ -283,7 +318,7 @@ Session::put('mess_success', null);
             		<small class="text-primary font-weight-bold">Đơn vị tính : </small>
             		<div class="input-group">
             			<input 
-            			onchange="auto_change_text_dvt(this)" 
+            			onchange="auto_change_text_dvt_update(this)" 
             			type="number" 
             			class="form-control" 
             			id="input_update_numberunit_product" 
@@ -297,7 +332,7 @@ Session::put('mess_success', null);
 		            	Số lượng đơn vị chưa hợp lệ.
 		           		 </div>
             			
-            			<input onfocus="this.value=''" onchange="auto_change_text_dvt(this)" type="text" class="form-control" list="datalist_product_unit" id="input_update_unit_product" name="input_update_unit_product" placeholder="Đơn vị ..." maxlength="20" value="{{$detail_pro->product_unit}}" required>
+            			<input onfocus="this.value=''" onchange="auto_change_text_dvt_update(this)" type="text" class="form-control" list="datalist_product_unit" id="input_update_unit_product" name="input_update_unit_product" placeholder="Đơn vị ..." maxlength="20" value="{{$detail_pro->product_unit}}" required>
             			<datalist id="datalist_product_unit">
             				<option value="Cặp">Cặp</option>
             				<option value="Cây">Cây</option>
@@ -384,7 +419,7 @@ Session::put('mess_success', null);
             				@foreach ($list_brand as $keyss => $brand_pro)
             				@if($brand_pro->brand_country_id == $count_pro->country_id)
 	            				<option 
-	            				{{$detail_pro->product_brand_id != null ? 'selected':''}}
+	            				{{$brand_pro->brand_id == $detail_pro->product_brand_id ? 'selected':''}}
 	            				class="small" 
 	            				value="{{$count_pro->country_id.'-'.$brand_pro->brand_id}}">
 	            					&emsp;__ {{$brand_pro->brand_name}}

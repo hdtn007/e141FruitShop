@@ -54,6 +54,11 @@ class BrandProduct extends Controller
         $data['country_desc'] = $request->input_add_country_desc;
         $data['country_author_id'] = Session::get('admin_id');
 
+        // xử lý xuất url
+        $url_text = $request->add_name_country;
+        $url_text_new = preg_replace(array('/\p{P}/u','/\s{2,}/', '/[\t\n]/'), " ", $url_text); // bỏ các ký tự không cần thiết
+        $data['country_url'] = str_replace(' ', '-', $url_text_new); // thay thế các ký tự không cần thiết
+
         $validator_img = Validator::make($request->all(), [
             'input_add_country_img' => 'image|mimes:jpeg,png,jpg,gif,svg|required|max:6000'
         ]);
@@ -147,6 +152,11 @@ class BrandProduct extends Controller
         $data['country_name'] = $request->input_edit_name_country;
         $data['country_desc'] = $request->input_edit_country_desc;
         $data['country_author_id'] = Session::get('admin_id');
+        
+        // xử lý xuất url
+        $url_text = $request->input_edit_name_country;
+        $url_text_new = preg_replace(array('/\p{P}/u','/\s{2,}/', '/[\t\n]/'), " ", $url_text); // bỏ các ký tự không cần thiết
+        $data['country_url'] = str_replace(' ', '-', $url_text_new); // thay thế các ký tự không cần thiết
 
         $result = DB::table('tbl_country')->where('country_id',$country_id)->first();
         $old_img = $result->country_ensign;

@@ -49,6 +49,11 @@ class CategoryProduct extends Controller
         $data['category_desc'] = $request->category_product_desc;
         $data['category_author'] = Session::get('admin_id');
 
+        // xử lý url
+        $url_text = $request->category_product_name;
+        $url_text_new = preg_replace(array('/\p{P}/u','/\s{2,}/', '/[\t\n]/'), " ", $url_text); // bỏ các ký tự không cần thiết
+        $data['category_url'] = str_replace(' ', '-', $url_text_new); // thay thế các ký tự không cần thiết
+
         DB::table('tbl_category_product')->insert($data); // câu truy vấn insert
 
         Session::put('message_box_add_category','Bạn vừa thêm thành công danh mục '.$request->category_product_name );
@@ -69,6 +74,11 @@ class CategoryProduct extends Controller
         $data['category_sub'] = $request->sub_category_product_sub;
         $data['category_name'] = $request->sub_category_product_name;
         $data['category_author'] = Session::get('admin_id');
+
+        // xử lý url
+        $url_text = $request->sub_category_product_name;
+        $url_text_new = preg_replace(array('/\p{P}/u','/\s{2,}/', '/[\t\n]/'), " ", $url_text); // bỏ các ký tự không cần thiết
+        $data['category_url'] = str_replace(' ', '-', $url_text_new); // thay thế các ký tự không cần thiết
 
         DB::table('tbl_category_product')->insert($data); // câu truy vấn insert
 
@@ -125,6 +135,11 @@ class CategoryProduct extends Controller
         $data['category_name'] = $request->edit_category_product_name; // request từ name html gán vào csdl
         $data['category_desc'] = $request->edit_category_product_desc;
         $data['category_author'] = Session::get('admin_id');
+
+        // xử lý url
+        $url_text = $request->edit_category_product_name;
+        $url_text_new = preg_replace(array('/\p{P}/u','/\s{2,}/', '/[\t\n]/'), " ", $url_text); // bỏ các ký tự không cần thiết
+        $data['category_url'] = str_replace(' ', '-', $url_text_new); // thay thế các ký tự không cần thiết
 
         DB::table('tbl_category_product')
             ->where('category_id',$category_product_id)

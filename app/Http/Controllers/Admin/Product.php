@@ -195,9 +195,11 @@ class Product extends Controller
         // xử lý trạng thái áp dụng khuyến mãi
         if (isset($request->saleprice_checkbox_add_product)) {
             $data['product_sale_status'] = 1;
+            $data['product_sale_price'] = $request->input_add_sale_price_product;
         }
         else{
             $data['product_sale_status'] = 0;
+            $data['product_sale_price'] = 0;
         }
 
         // xử lý ngày hết hạn chuẩn
@@ -216,7 +218,9 @@ class Product extends Controller
         }        
         
         // xử lý tên sản phẩm để xuất url
-        $data['product_url'] = $request->input_add_name_product;
+        $url_text = $request->input_add_name_product;
+        $url_text_new = preg_replace(array('/\p{P}/u','/\s{2,}/', '/[\t\n]/'), " ", $url_text); // bỏ các ký tự không cần thiết
+        $data['product_url'] = str_replace(' ', '-', $url_text_new); // thay thế các ký tự không cần thiết
 
         // xử lý thông tin xuất xứ, nhãn hiệu
         $getValCoutryBrand = $request->input_add_country_product;
@@ -267,7 +271,7 @@ class Product extends Controller
             elseif($input_file_img1->isValid())
             {
                 $get_full_name_file1 = $input_file_img1->getClientOriginalName();
-                $get_name_file1 = current(explode('.',$get_full_name_file1));
+                $get_name_file1 = current(explode('.'.$input_file_img1->getClientOriginalExtension(),$get_full_name_file1));
 
                 $new_name_img1 = 'img_'.$get_name_file1.'-TraiCay141-'.time().'.'.$input_file_img1->getClientOriginalExtension();
 
@@ -285,7 +289,7 @@ class Product extends Controller
             elseif($input_file_img2->isValid())
             {
                 $get_full_name_file2 = $input_file_img2->getClientOriginalName();
-                $get_name_file2 = current(explode('.',$get_full_name_file2));
+                $get_name_file2 = current(explode('.'.$input_file_img2->getClientOriginalExtension(),$get_full_name_file2));
 
                 $new_name_img2 = 'img_'.$get_name_file2.'-TraiCay141-'.time().'.'.$input_file_img2->getClientOriginalExtension();
 
@@ -303,7 +307,7 @@ class Product extends Controller
             elseif($input_file_img3->isValid())
             {
                 $get_full_name_file3 = $input_file_img3->getClientOriginalName();
-                $get_name_file3 = current(explode('.',$get_full_name_file3));
+                $get_name_file3 = current(explode('.'.$input_file_img3->getClientOriginalExtension(),$get_full_name_file3));
 
                 $new_name_img3 = 'img_'.$get_name_file3.'-TraiCay141-'.time().'.'.$input_file_img3->getClientOriginalExtension();
 
@@ -321,7 +325,7 @@ class Product extends Controller
             elseif($input_file_img4->isValid())
             {
                 $get_full_name_file4 = $input_file_img4->getClientOriginalName();
-                $get_name_file4 = current(explode('.',$get_full_name_file4));
+                $get_name_file4 = current(explode('.'.$input_file_img4->getClientOriginalExtension(),$get_full_name_file4));
 
                 $new_name_img4 = 'img_'.$get_name_file4.'-TraiCay141-'.time().'.'.$input_file_img4->getClientOriginalExtension();
 
@@ -339,7 +343,7 @@ class Product extends Controller
             elseif($input_file_img5->isValid())
             {
                 $get_full_name_file5 = $input_file_img5->getClientOriginalName();
-                $get_name_file5 = current(explode('.',$get_full_name_file5));
+                $get_name_file5 = current(explode('.'.$input_file_img5->getClientOriginalExtension(),$get_full_name_file5));
 
                 $new_name_img5 = 'img_'.$get_name_file5.'-TraiCay141-'.time().'.'.$input_file_img5->getClientOriginalExtension();
 
@@ -351,6 +355,7 @@ class Product extends Controller
 
         $result_code_pro = DB::table('tbl_product')
                     ->where('product_code',$request->input_add_code_product)
+                    ->orWhere('product_url',str_replace(' ', '-', $url_text_new))
                     ->first();
 
         if (!$result_code_pro) {
@@ -358,7 +363,7 @@ class Product extends Controller
             Session::put('mess_success','Thêm thành công !');
         }
         else{
-            Session::put('mess_err','Mã sản phẩm này đã tồn tại !');
+            Session::put('mess_err','Sản phẩm này đã tồn tại !');
         }
         
         return Redirect::to('/manage-product/add');
@@ -397,7 +402,7 @@ class Product extends Controller
         $product_code = $request->input_update_code_product;
 
         $result = DB::table('tbl_product')
-                  ->where('product_code',$product_code)
+                  ->where('product_id',$product_id)
                   ->first();
 
         $data['product_code'] = $request->input_update_code_product;
@@ -423,9 +428,11 @@ class Product extends Controller
         // xử lý trạng thái áp dụng khuyến mãi
         if (isset($request->saleprice_checkbox_update_product)) {
             $data['product_sale_status'] = 1;
+            $data['product_sale_price'] = $request->input_update_sale_price_product;
         }
         else{
             $data['product_sale_status'] = 0;
+            $data['product_sale_price'] = 0;
         }
 
         // xử lý ngày hết hạn chuẩn
@@ -444,7 +451,9 @@ class Product extends Controller
         }        
         
         // xử lý tên sản phẩm để xuất url
-        $data['product_url'] = $request->input_update_name_product;
+        $url_text = $request->input_update_name_product;
+        $url_text_new = preg_replace(array('/\p{P}/u','/\s{2,}/', '/[\t\n]/'), " ", $url_text); // bỏ các ký tự không cần thiết
+        $data['product_url'] = str_replace(' ', '-', $url_text_new); // thay thế các ký tự không cần thiết
 
         // xử lý thông tin xuất xứ, nhãn hiệu
         $getValCoutryBrand = $request->input_update_country_product;
@@ -495,7 +504,7 @@ class Product extends Controller
             elseif($input_file_img1->isValid())
             {
                 $get_full_name_file1 = $input_file_img1->getClientOriginalName();
-                $get_name_file1 = current(explode('.',$get_full_name_file1));
+                $get_name_file1 = current(explode('.'.$input_file_img1->getClientOriginalExtension(),$get_full_name_file1));
 
                 $new_name_img1 = 'img_'.$get_name_file1.'-TraiCay141-'.time().'.'.$input_file_img1->getClientOriginalExtension();
 
@@ -520,7 +529,7 @@ class Product extends Controller
             elseif($input_file_img2->isValid())
             {
                 $get_full_name_file2 = $input_file_img2->getClientOriginalName();
-                $get_name_file2 = current(explode('.',$get_full_name_file2));
+                $get_name_file2 = current(explode('.'.$input_file_img2->getClientOriginalExtension(),$get_full_name_file2));
 
                 $new_name_img2 = 'img_'.$get_name_file2.'-TraiCay141-'.time().'.'.$input_file_img2->getClientOriginalExtension();
 
@@ -545,7 +554,7 @@ class Product extends Controller
             elseif($input_file_img3->isValid())
             {
                 $get_full_name_file3 = $input_file_img3->getClientOriginalName();
-                $get_name_file3 = current(explode('.',$get_full_name_file3));
+                $get_name_file3 = current(explode('.'.$input_file_img3->getClientOriginalExtension(),$get_full_name_file3));
 
                 $new_name_img3 = 'img_'.$get_name_file3.'-TraiCay141-'.time().'.'.$input_file_img3->getClientOriginalExtension();
 
@@ -570,7 +579,7 @@ class Product extends Controller
             elseif($input_file_img4->isValid())
             {
                 $get_full_name_file4 = $input_file_img4->getClientOriginalName();
-                $get_name_file4 = current(explode('.',$get_full_name_file4));
+                $get_name_file4 = current(explode('.'.$input_file_img4->getClientOriginalExtension(),$get_full_name_file4));
 
                 $new_name_img4 = 'img_'.$get_name_file4.'-TraiCay141-'.time().'.'.$input_file_img4->getClientOriginalExtension();
 
@@ -595,7 +604,7 @@ class Product extends Controller
             elseif($input_file_img5->isValid())
             {
                 $get_full_name_file5 = $input_file_img5->getClientOriginalName();
-                $get_name_file5 = current(explode('.',$get_full_name_file5));
+                $get_name_file5 = current(explode('.'.$input_file_img5->getClientOriginalExtension(),$get_full_name_file5));
 
                 $new_name_img5 = 'img_'.$get_name_file5.'-TraiCay141-'.time().'.'.$input_file_img5->getClientOriginalExtension();
 
@@ -614,8 +623,9 @@ class Product extends Controller
 
         $result_code_pro = DB::table('tbl_product')
                     ->where([
-                        ['product_code',$request->input_update_code_product],['product_id','<>',$request->input_update_id_product]
+                        ['product_code',$request->input_update_code_product],['product_id','<>',$product_id]
                     ])
+                    ->orWhere([['product_url',str_replace(' ', '-', $url_text_new)],['product_id','<>',$product_id]])
                     ->first();
 
         if (!$result_code_pro) {
@@ -623,11 +633,12 @@ class Product extends Controller
             Session::put('mess_success','Cập nhật thành công !');
         }
         else{
-            Session::put('mess_err','Mã sản phẩm này đã tồn tại !');
+            Session::put('mess_err','Sản phẩm này đã tồn tại !');
             return redirect()->back();
         }
         
         return Redirect::to('/manage-product/edit/'.$product_code);
+
     }
 
     public function delete_img_product($img_product , $code_product)
