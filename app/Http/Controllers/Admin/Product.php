@@ -38,7 +38,7 @@ class Product extends Controller
                          'tbl_admin.admin_id')
                         ->select('tbl_product.*', 'tbl_admin.admin_name')
                         ->orderBy('tbl_product.product_name')
-                        ->paginate(100)->withQueryString();
+                        ->paginate(10)->withQueryString();
 
         $count_product = DB::table('tbl_product')
                          ->where('product_inventory')

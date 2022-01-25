@@ -44,7 +44,7 @@
 
     <!-- Custom styles for table page -->
     <link href="{{asset('public/admin/vendor/datatables/dataTables.bootstrap4.css')}}" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <!-- sweetalert2-->
     <script src="{{asset('public/admin/vendor/sweetalert2/sweetalert2.all.min.js')}}"></script>
 

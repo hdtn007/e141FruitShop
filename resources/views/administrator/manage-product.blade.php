@@ -204,7 +204,8 @@
 		</div>
 		<nav aria-label="Page navigation example">
 		  <ul class="pagination justify-content-center">
-		    {{ $list_product->links('pagination::Bootstrap-4') }}
+		    {{-- {{ $list_product->links('pagination::Bootstrap-4') }} --}}
+		    {!! $list_product->links() !!}
 		  </ul>
 		</nav>
 	</div>
