@@ -57,6 +57,11 @@ class Product extends Controller
                                 ->get();
         $all_other_products = DB::table('tbl_product')
                                 ->where([['product_status',1],['product_url','<>',$url_product]])
+                                ->where(function ($query) use ($all_related_products) {
+                                    foreach ($all_related_products as $key => $val) {
+                                        $query->where('product_id', '<>', $val->product_id);
+                                    }                              
+                                })
                                 ->inRandomOrder()
                                 ->limit(6)
                                 ->get();
@@ -65,13 +70,16 @@ class Product extends Controller
         ->where('product_url',$url_product)
         ->update(['product_view'=>DB::raw('product_view+1')]);
 
-        $manager_data = view('customer.product-details')
+        $all_like = DB::table('tbl_like_product')
+                            ->where('like_pro_customer_id',Session::get('user_id'))
+                            ->get();
+
+        return view('customer.product-details')
                        ->with('pro_pro',$detail_product)
+                       ->with('all_like',$all_like)
                        ->with('get_brand',$get_brand)
                        ->with('related_pro',$all_related_products)
                        ->with('other_pro',$all_other_products)
                        ->with('list_category',$all_category_product);
-
-        return view('home-layout')->with('customer.product-details',$manager_data);
     }
 }

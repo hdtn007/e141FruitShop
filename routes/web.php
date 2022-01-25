@@ -62,18 +62,20 @@ Route::get('/login',
 		   'Customer\CustomerController@login_user'); // ADMIN LOGIN LAUOUT
 
 // ĐĂNG NHẬP
-// Route::post('/admin-dashboard',
-// 		    'Admin\AdminController@login_dashboard'); 
+Route::post('/home-login',
+		    'Customer\CustomerController@signin_user'); 
 
 
 // ĐĂNG XUẤT
-// Route::get('/logout-dashboard',
-// 		   'Admin\AdminController@logout_dashboard'); 
+Route::get('/logout-user',
+		   'Customer\CustomerController@logout_user'); 
 
 
 // TẠO TÀI KHOẢN
 Route::get('/signup',
 		   'Customer\CustomerController@signup_user'); // Show trang đăng ký
+Route::post('/signup/add',
+		   'Customer\CustomerController@add_new_user'); // đăng ký
 
 
 // CẬP NHẬT TÀI KHOẢN
@@ -131,6 +133,39 @@ Route::get('/store/all_foods', 'Customer\ProductCategory@show_all_foods');
 
 Route::get('/cart', 'Customer\Cart@index'); // giỏ hàng
 
+// THÊM SẢN PHẨM VÀO GIỎ HÀNG Ajax
+Route::post('/cart/add', 'Customer\Cart@add_product2cart'); // thêm vào giỏ hàng
+
+// MUA NGAY SẢN PHẨM
+Route::post('/cart/buynow', 'Customer\Cart@buynow_product2cart'); // mua ngay
+
+// XÓA SẢN PHẨM RA KHỎI GIỎ HÀNG
+Route::get('/cart/delete/{cart_id}', 'Customer\Cart@delete_product2cart');
+
+// TĂNG SỐ SẢN PHẨM RA KHỎI GIỎ HÀNG
+Route::get('/cart/up/{cart_id}', 'Customer\Cart@up_product2cart');
+// GIẢM SỐ SẢN PHẨM RA KHỎI GIỎ HÀNG
+Route::get('/cart/down/{cart_id}', 'Customer\Cart@down_product2cart');
+
+// UPDATE SỐ SẢN PHẨM RA KHỎI GIỎ HÀNG
+Route::post('/cart/update/quatity', 'Customer\Cart@update_quatity_product2cart');
+
+// ADD PAYMENT
+Route::post('/payment/add', 'Customer\Payment@add_payment');
+
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ LIKE ( SẢN PHẨM YÊU THÍCH ) ____________________________
+// ___________________________________________________________________________
+
+Route::get('/product-like', 'Customer\LikeProduct@show_product_like'); // danh sách sản phẩm yêu thích
+
+// YÊU THÍCH Ajax
+Route::post('/product-like/add', 'Customer\LikeProduct@save_like_product'); // thêm vào yêu thích
+
+// BỎ THÍCH Ajax
+Route::post('/product-like/remove', 'Customer\LikeProduct@remove_like_product'); // bỏ thích
 
 // ___________________________________________________________________________
 // ___________________________________________________________________________
@@ -138,7 +173,7 @@ Route::get('/cart', 'Customer\Cart@index'); // giỏ hàng
 // __________________ BLOG POST ( MẸO ) ___________
 // ___________________________________________________________________________
 
-Route::get('/facts', 'Customer\HomePage@index'); // Check đơn hàng đã đặt
+Route::get('/facts', 'Customer\Blog@index'); // Check đơn hàng đã đặt
 
 
 // ___________________________________________________________________________
@@ -147,7 +182,7 @@ Route::get('/facts', 'Customer\HomePage@index'); // Check đơn hàng đã đặ
 // __________________ INFORMATION ( THÔNG TIN LIÊN HỆ ) ___________
 // ___________________________________________________________________________
 
-Route::get('/contact', 'Customer\HomePage@index');
+Route::get('/contact', 'Customer\Contact@index');
 
 // Route::get('/home', 'Customer\HomePage@index'); // Tạo tài khoản
 
@@ -277,3 +312,56 @@ Route::post('/manage-product/update/save',
 // ---------- Xóa sản phẩm ------------
 Route::get('/manage-product/delete-img/{img_product}&{code_product}',
 		   'Admin\Product@delete_img_product'); // Xóa ảnh minh họa sản phẩm
+
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ TOOL ( CÔNG CỤ KHÁC ) ___________________________________
+// ___________________________________________________________________________
+
+// ---------- Show đơn vị tính ------------
+Route::get('/tool/unit',
+		   'Admin\Unit@show_unit_tool_page');
+
+// ---------- Thêm đơn vị tính ------------
+Route::post('/add-unit',
+		   'Admin\Unit@add_unit'); 
+// ---------- Xóa đơn vị tính ------------
+Route::get('/delete-unit/{unit_id}',
+		   'Admin\Unit@delete_unit'); 
+
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// ___________________________________________________________________________
+// __________________ ONLINE BILL ( BÁN HÀNG VÀ HÓA ĐƠN ONLINE ) _____________
+// ___________________________________________________________________________
+
+// ---------- SHOW NEW BILL ------------
+Route::get('/bill-online/new',
+		   'Admin\BillController@Show_New_Bill');
+// ---------- SHOW OLD BILL ------------
+Route::get('/bill-online/old',
+		   'Admin\BillController@Show_Old_Bill');
+// ---------- SHOW DELETE BILL ------------
+Route::get('/bill-online/delete',
+		   'Admin\BillController@Show_Delete_Bill');
+
+// ---------- DELETE BILL ------------
+Route::get('/bill-online/delete/{id_bill}',
+		   'Admin\BillController@Delete_New_Bill');
+
+// ---------- DELETE FOREVER BILL ( CHỈ DÀNH CHO ADMIN TEST )------------
+Route::get('/bill-online/delete-forever/{id_bill}',
+		   'Admin\BillController@Delete_Bill');
+
+// ---------- SINGLE CLOSING PRODUCT ------------
+Route::post('/bill-online/update-stock',
+		   'Admin\BillController@update_stock');
+
+// ---------- OUT OF STOCK PRODUCT ------------
+Route::post('/bill-online/update-out-stock',
+		   'Admin\BillController@update_out_of_stock');
+
+// ---------- ORDER CLOSING BILL ------------
+Route::get('/bill-online/update-order-closing/{id_bill}',
+		   'Admin\BillController@Order_Closing_New_Bill');

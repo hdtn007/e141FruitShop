@@ -20,6 +20,7 @@ class CreateTblUser extends Migration
             $table->string('user_username');
             $table->string('user_email')->nullable();
             $table->string('user_phone')->nullable();
+            $table->string('user_phone_recieve')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('user_password');
             $table->integer('user_gender')->default(1); // mặc định Nam

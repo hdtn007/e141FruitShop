@@ -16,12 +16,14 @@ class CreateTblBill extends Migration
         Schema::create('tbl_bill', function (Blueprint $table) {
             // $table->id();
             $table->increments('bills_id');
-            $table->integer('bills_bill_id')->nullable(); // Số hóa đơn
+            $table->string('bills_bill_id',25); // Số hóa đơn
             $table->integer('bills_customer_id')->nullable(); // người mua
             $table->integer('bills_product_id');  // sản phẩm mua
-            $table->integer('bills_quantily')->default(1); // số lượng mua
-            $table->date('bills_purchase_date')->nullable(); // mua vào ngày
-            $table->integer('bills_status_bill')->default(0); // trạng thái nhận sản phẩm
+            $table->integer('bills_quantity')->default(1); // số lượng mua
+            $table->dateTime('bills_purchase_date')->nullable(); // mua vào ngày
+            $table->integer('bills_status_product')->default(1); // trạng thái sản phẩm
+            $table->integer('bills_status_bill')->default(0); // trạng thái hóa đơn
+            $table->text('bills_desc')->nullable(); // mô tả bill
             $table->integer('bills_price_product'); // giá bán sản phẩm
             $table->integer('bills_sum_price')->nullable(); // Tổng tiền bill
             $table->text('bills_customer_request')->nullable(); // yêu cầu của khách hàng

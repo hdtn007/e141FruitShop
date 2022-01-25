@@ -1,7 +1,14 @@
 @extends('home-layout')
 @section('content')
 <section>
-	<form oninput="formatCurrency(this)">
+	<form
+	 id="form_add_product_to_cart"
+	 name="form_add_product_to_cart"
+	 role="form" 
+	 action="{{URL::to('/cart/buynow')}}"
+	 method="post"
+	 oninput="formatCurrency(this)">
+	 {{csrf_field()}}
 	<br>
 	<div class="container">
 		<div class="row">
@@ -73,6 +80,7 @@
 								<label>Số lượng:</label>
 								<input 
 								id="input_quantity_cart" 
+								name="input_quantity_cart" 
 								onfocusout="auto_check_input_null(this)"
 								type="number"
 								maxlength="3" 
@@ -81,6 +89,20 @@
 								value="1" 
 								min="1"
 								required/>
+								<input
+								hidden
+								id="input_cart_product_id"
+								name="input_cart_product_id"
+								type="text"
+								value="{{$pro_pro->product_id}}"
+								required/>
+								<input
+								hidden
+								type="text"
+								id="input_ip_address"
+								name="input_ip_address"
+								required
+								>
 
 							</span>
 							<p><b>Giá gốc:</b>
@@ -88,20 +110,21 @@
 								</u>
 							</p>
 							<p><b>Xuất xứ:</b> {{$pro_pro->country_name}}</p>
-							<p><b>Lượt xem:</b> {{$pro_pro->product_view}} <i class="fa fa-eye"></i></p>
+							<p><b>Lượt xem:</b> {{number_format($pro_pro->product_view,0,",",".")}} <i class="fa fa-eye"></i></p>
 							@if($get_brand)
 							<p style="padding-bottom: 1rem;">
 								<b>Thương hiệu:</b> {{$get_brand->brand_name}}
 							</p>
 							@endif
-							<button type="button" class="btn btn-fefault cart">
+							<br>
+							<a data-id-product="{{$pro_pro->product_id}}" class="btn btn-fefault add-to-cart-detail cart">
 								<i class="glyphicon glyphicon-plus"></i>
 								Thêm vào giỏ
-							</button>
-							<button type="button" class="btn btn-fefault cart" style="background-color: #FC857E;">
+							</a>
+							<a href="javascript:{}" onclick="document.getElementById('form_add_product_to_cart').submit();" class="btn btn-fefault cart" style="background-color: #FC857E;">
 								<i class="fa fa-shopping-cart"></i>
 								Mua ngay
-							</button>
+							</a>
 						</div><!--/product-information-->
 					</div>
 				</div><!--/product-details-->
@@ -131,23 +154,53 @@
 									<div class="single-products">
 										<div class="productinfo text-center">
 											<a href="{{URL::to('/meta_product='.$re_pro->product_url)}}">
-											<img src="{{asset('public/media/img-product/'.$re_pro->product_img1)}}" alt="{{$re_pro->product_desc}}" />
+											<img class="img-sm" class="img-lg" src="{{asset('public/media/img-product/'.$re_pro->product_img1)}}" alt="{{$re_pro->product_desc}}" />
 											</a>
 											<h2>{{number_format($re_pro->product_sell_price,0,",",".")}}đ<span>/{{$re_pro->product_number_unit <= 1 ? '': $re_pro->product_number_unit}}{{$re_pro->product_unit}}</span>
 											</h2>
 											<p>{{$re_pro->product_name}}</p>
 											<div class="choose1">
 						                        <ul class="nav nav-pills nav-justified">
-						                          <li title="Yêu thích"><center>
-						                            <a class="btn btn-default product-like product-liked">
-						                              <i class="fa fa-heart"></i>
-						                            </a></center></li>
-						                            <li title="Thêm vào giỏ hàng"><center><a class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i></a></center></li>
+						                        	<li title="Yêu thích">
+						                        		<center>
+						                        			@php $i1 = 0; @endphp
+						                        			@foreach($all_like as $key_all_like => $pro_like)
+						                        			@if($pro_like->like_pro_product_id == $re_pro->product_id)
+						                        			@php $i1 = 1; @endphp
+						                        			@endif
+						                        			@endforeach
+						                        			@if($i1 == 1)
+						                        			<a 
+						                        			data-like="1" 
+						                        			data-count-like="count_like_{{$re_pro->product_id}}" 
+						                        			data-id-product="{{$re_pro->product_id}}"
+						                        			class="btn btn-default product-like product-liked">
+						                        			<i class="fa fa-heart"></i>
+						                        		</a>
+						                        		@else
+						                        		<a 
+						                        		data-like="0" 
+						                        		data-count-like="count_like_{{$re_pro->product_id}}"
+						                        		data-id-product="{{$re_pro->product_id}}" 
+						                        		class="btn btn-default product-like">
+						                        		<i class="fa fa-heart"></i>
+						                        	</a>
+						                        	@endif
+						                        		</center>
+						                        	</li>
+						                            <li title="Thêm vào giỏ hàng"><center>
+						                            	<a data-id-product="{{$re_pro->product_id}}" class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i>
+						                            	</a></center></li>
 						                          </ul>
 						                        </div>
 						                        <div class="choose">
 						                          <ul class="nav nav-pills nav-justified">
-						                            <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">0 <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
+						                          	<li title="{{$re_pro->product_like}} lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">
+						                          		<span id="count_like_{{$re_pro->product_id}}">{{$re_pro->product_like}}
+						                          		</span>
+						                          		<img src="{{asset('public/media/img-icons/heart.png')}}" alt="" />
+						                          	</a>
+						                          </li>
 						                            <li title="Xem chi tiết sản phẩm"><a href="{{URL::to('/meta_product='.$re_pro->product_url)}}"><i class="fa fa-plus-square"></i></a></li>
 						                          </ul>
 						                        </div>
@@ -200,7 +253,7 @@
 										<div class="single-products">
 											<div class="productinfo text-center">
 												<a href="{{URL::to('/meta_product='.$or_pro1->product_url)}}">
-												<img src="{{asset('public/media/img-product/'.$or_pro1->product_img1)}}" alt="{{$or_pro1->product_desc}}"/>
+												<img class="img-lg" src="{{asset('public/media/img-product/'.$or_pro1->product_img1)}}" alt="{{$or_pro1->product_desc}}"/>
 												</a>
 												<h2>
 													{{number_format($or_pro1->product_sell_price,0,",",".")}}đ<span>/{{$or_pro1->product_number_unit <= 1 ? '': $or_pro1->product_number_unit}}{{$or_pro1->product_unit}}</span>
@@ -208,18 +261,49 @@
 												<p>{{$or_pro1->product_name}}</p>
 												<div>
 						                          <ul class="nav nav-pills nav-justified">
-						                            <li title="Yêu thích"><center>
-						                              <a class="btn btn-default product-like product-liked">
-						                                <i class="fa fa-heart"></i>
-						                              </a></center></li>
-						                            <li title="Thêm vào giỏ hàng"><center><a class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i></a></center></li>
+						                          	<li title="Yêu thích">
+						                          		<center>
+						                          			@php $i2 = 0; @endphp
+						                          			@foreach($all_like as $key_all_like => $pro_like)
+						                          			@if($pro_like->like_pro_product_id == $or_pro1->product_id)
+						                          			@php $i2 = 1; @endphp
+						                          			@endif
+						                          			@endforeach
+						                          			@if($i2 == 1)
+						                          			<a 
+						                          			data-like="1" 
+						                          			data-count-like="count_like_{{$or_pro1->product_id}}" 
+						                          			data-id-product="{{$or_pro1->product_id}}"
+						                          			class="btn btn-default product-like product-liked">
+						                          			<i class="fa fa-heart"></i>
+						                          		</a>
+						                          		@else
+						                          		<a 
+						                          		data-like="0" 
+						                          		data-count-like="count_like_{{$or_pro1->product_id}}"
+						                          		data-id-product="{{$or_pro1->product_id}}" 
+						                          		class="btn btn-default product-like">
+						                          		<i class="fa fa-heart"></i>
+						                          	</a>
+						                          	@endif
+						                          		</center>
+						                          	</li>
+						                            <li title="Thêm vào giỏ hàng"><center>
+						                            	<a data-id-product="{{$or_pro1->product_id}}" class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i>
+						                            	</a></center></li>
 						                          </ul>
 						                        </div>
 											</div>
 										</div>
 										 <div class="choose">
 					                      <ul class="nav nav-pills nav-justified">
-					                        <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">0 <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
+					                        <li title="{{$or_pro1->product_like}} lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;">
+					                        	<a class="count-like">
+					                        		<span id="count_like_{{$or_pro1->product_id}}">{{$or_pro1->product_like}}
+					                        		</span> 
+					                        		<img src="{{asset('public/media/img-icons/heart.png')}}" alt="" />
+					                        	</a>
+					                        </li>
 					                        <li title="Xem chi tiết sản phẩm"><a href="{{URL::to('/meta_product='.$or_pro1->product_url)}}"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm</a></li>
 					                      </ul>
 					                    </div>
@@ -236,7 +320,7 @@
 										<div class="single-products">
 											<div class="productinfo text-center">
 												<a href="{{URL::to('/meta_product='.$or_pro2->product_url)}}">
-												<img src="{{asset('public/media/img-product/'.$or_pro2->product_img1)}}" alt="{{$or_pro2->product_desc}}"/>
+												<img class="img-lg" src="{{asset('public/media/img-product/'.$or_pro2->product_img1)}}" alt="{{$or_pro2->product_desc}}"/>
 												</a>
 												<h2>
 													{{number_format($or_pro2->product_sell_price,0,",",".")}}đ<span>/{{$or_pro2->product_number_unit <= 1 ? '': $or_pro2->product_number_unit}}{{$or_pro2->product_unit}}</span>
@@ -244,18 +328,49 @@
 												<p>{{$or_pro2->product_name}}</p>
 												<div>
 						                          <ul class="nav nav-pills nav-justified">
-						                            <li title="Yêu thích"><center>
-						                              <a class="btn btn-default product-like product-liked">
-						                                <i class="fa fa-heart"></i>
-						                              </a></center></li>
-						                            <li title="Thêm vào giỏ hàng"><center><a class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i></a></center></li>
+						                          	<li title="Yêu thích">
+						                          		<center>
+						                          			@php $i3 = 0; @endphp
+						                          			@foreach($all_like as $key_all_like => $pro_like)
+						                          			@if($pro_like->like_pro_product_id == $or_pro2->product_id)
+						                          			@php $i3 = 1; @endphp
+						                          			@endif
+						                          			@endforeach
+						                          			@if($i3 == 1)
+						                          			<a 
+						                          			data-like="1" 
+						                          			data-count-like="count_like_{{$or_pro2->product_id}}" 
+						                          			data-id-product="{{$or_pro2->product_id}}"
+						                          			class="btn btn-default product-like product-liked">
+						                          			<i class="fa fa-heart"></i>
+						                          		</a>
+						                          		@else
+						                          		<a 
+						                          		data-like="0" 
+						                          		data-count-like="count_like_{{$or_pro2->product_id}}"
+						                          		data-id-product="{{$or_pro2->product_id}}" 
+						                          		class="btn btn-default product-like">
+						                          		<i class="fa fa-heart"></i>
+						                          	</a>
+						                          	@endif
+						                          		</center>
+						                          	</li>
+						                            <li title="Thêm vào giỏ hàng"><center>
+						                            	<a  data-id-product="{{$or_pro2->product_id}}" class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i>
+						                            	</a></center></li>
 						                          </ul>
 						                        </div>
 											</div>
 										</div>
 										<div class="choose">
 					                      <ul class="nav nav-pills nav-justified">
-					                        <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">0 <img src="{{asset('public/media/img-icons/heart.png')}}" alt="" /></a></li>
+					                      	<li title="{{$or_pro2->product_like}} lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;">
+					                      		<a class="count-like">
+					                      			<span id="count_like_{{$or_pro2->product_id}}">{{$or_pro2->product_like}}
+					                        		</span> 
+					                      			<img src="{{asset('public/media/img-icons/heart.png')}}" alt="" />
+					                      		</a>
+					                      	</li>
 					                        <li title="Xem chi tiết sản phẩm"><a href="{{URL::to('/meta_product='.$or_pro2->product_url)}}"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm</a></li>
 					                      </ul>
 					                    </div>

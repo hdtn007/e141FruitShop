@@ -334,44 +334,14 @@ Session::put('mess_success', null);
             			
             			<input onfocus="this.value=''" onchange="auto_change_text_dvt_update(this)" type="text" class="form-control" list="datalist_product_unit" id="input_update_unit_product" name="input_update_unit_product" placeholder="Đơn vị ..." maxlength="20" value="{{$detail_pro->product_unit}}" required>
             			<datalist id="datalist_product_unit">
-            				<option value="Cặp">Cặp</option>
-            				<option value="Cây">Cây</option>
-            				<option value="Chai">Chai</option>
-            				<option value="gram">gram</option>
-            				<option value="Kg">Kg</option>
-            				<option value="Hộp">Hộp</option>
-            				<option value="Lon">Lon</option>
-            				<option value="Gói">Gói</option>
-            				<option value="Giỏ">Giỏ</option>
-            				<option value="Lọ">Lọ</option>
-            				<option value="Lốc">Lốc</option>
-            				<option value="Mâm">Mâm</option>
-            				<option value="Túi">Túi</option>
-            				<option value="Thùng">Thùng</option>
-            				<option value="Trái">Trái</option>
-            				<option value="Tuýp">Tuýp</option>
-            				<option value="Tép">Tép</option>
-            				<option value="Vỉ">Vỉ</option>
+            				@foreach($list_unit as $key_unit => $unit_pro)
+            				<option value="{{$unit_pro->unit_name}}">{{$unit_pro->unit_name}}</option>
+            				@endforeach
             			</datalist>
             		{{-- 	<select onchange="auto_change_text_dvt(this)" class="form-control" id="input_update_unit_product" name="input_update_unit_product" required>
-            				<option value="Cặp">Cặp</option>
-            				<option value="Cây">Cây</option>
-            				<option value="Chai">Chai</option>
-            				<option value="gram">gram</option>
-            				<option value="Kg">Kg</option>
-            				<option value="Hộp">Hộp</option>
-            				<option value="Lon">Lon</option>
-            				<option value="Gói">Gói</option>
-            				<option value="Giỏ">Giỏ</option>
-            				<option value="Lọ">Lọ</option>
-            				<option value="Lốc">Lốc</option>
-            				<option value="Mâm">Mâm</option>
-            				<option value="Túi">Túi</option>
-            				<option value="Thùng">Thùng</option>
-            				<option value="Trái">Trái</option>
-            				<option value="Tuýp">Tuýp</option>
-            				<option value="Tép">Tép</option>
-            				<option value="Vỉ">Vỉ</option>
+            				@foreach($list_unit as $key_unit => $unit_pro)
+            				<option value="{{$unit_pro->unit_name}}">{{$unit_pro->unit_name}}</option>
+            				@endforeach
             			</select> --}}
             		</div>
             		<small>Lưu ý : là khối lượng nhỏ nhất có thể bán ra</small>
@@ -589,6 +559,24 @@ Session::put('mess_success', null);
 		          	 <small>Lưu ý : Các từ khóa SEO cách nhau bởi dấu phẩy ( , ).</small>
 		            <div id="mess_err_add_keywords_product" class="invalid-tooltip">
 		            	Từ khóa chưa hợp lệ.
+		            </div>           		
+            	</div>
+            	<div class="name-product form-group position-relative">
+            		<small class="text-primary font-weight-bold">Mô tả SEO : </small>
+            		<textarea 
+		            	  type="text" 
+		            	  class="form-control" 
+		            	  name="input_update_desc_seo_product"
+		            	  id="input_update_desc_seo_product"
+		            	  maxlength="255"
+		            	  rows="3"
+		            	  data-mess-err="mess_err_update_desc_seo_product" 
+		            	  placeholder="VD : Tên sản phẩm là loại hoa quả ngon nhất thế giới... "
+		            	  data-role="tagsinput" 
+		            	  >{{$detail_pro->product_short_desc}}</textarea>
+		          	 <small>Lưu ý : Mô tả ngắn.</small>
+		            <div id="mess_err_update_desc_seo_product" class="invalid-tooltip">
+		            	Mô tả chưa hợp lệ.
 		            </div>           		
             	</div>
             	<hr>

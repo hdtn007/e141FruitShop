@@ -258,3 +258,47 @@ input:checked + .slider:after
   background: #555; 
 }
  
+/*// BILL*/
+
+
+.bill-info .card-body .cus-info p{
+  font-size: 0.9rem;
+  font-style: normal;
+  color: #000000;
+  font-weight: bold;
+}
+
+.bill-info .card-body .cus-info p span{
+  font-family: Arial,Helvetica,sans-serif;
+  /*font-style: italic;*/
+  font-size: 0.9rem;
+  color: #012345;
+  font-weight: 300;
+  /*text-decoration: underline;*/
+}
+
+/*
+██████╗  █████╗ ██████╗ ██╗ ██████╗                ██████╗ ██████╗ ██╗      ██████╗ ██████╗ 
+██╔══██╗██╔══██╗██╔══██╗██║██╔═══██╗              ██╔════╝██╔═══██╗██║     ██╔═══██╗██╔══██╗
+██████╔╝███████║██║  ██║██║██║   ██║    █████╗    ██║     ██║   ██║██║     ██║   ██║██████╔╝
+██╔══██╗██╔══██║██║  ██║██║██║   ██║    ╚════╝    ██║     ██║   ██║██║     ██║   ██║██╔══██╗
+██║  ██║██║  ██║██████╔╝██║╚██████╔╝              ╚██████╗╚██████╔╝███████╗╚██████╔╝██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝ ╚═════╝                ╚═════╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═╝
+
+*/
+
+.radio-success { filter: hue-rotate(0deg)   }
+.radio-c2 { filter: hue-rotate(30deg)  }
+.radio-c3 { filter: hue-rotate(60deg)  }
+.radio-c4 { filter: hue-rotate(90deg)  }
+.radio-c5 { filter: hue-rotate(120deg) }
+.radio-danger { filter: hue-rotate(150deg) }
+.radio-c7 { filter: hue-rotate(180deg) }
+.radio-c8 { filter: hue-rotate(210deg) }
+.radio-c9 { filter: hue-rotate(240deg) }
+
+.bill-info .card-body input[type=checkbox] {
+  transform: scale(2);
+  margin: 10px;
+  cursor: pointer;
+}

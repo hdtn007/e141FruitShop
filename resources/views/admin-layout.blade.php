@@ -2,29 +2,34 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <title>
+        {{$title_web}} - 141Fruit Admin
+    </title> 
+
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>
-        @if(Request::segment(1) === 'dashboard')
-        Trình quản lý 
-        @elseif(Request::segment(1) === 'category-product')
-        Danh mục sản phẩm 
-        @elseif(Request::segment(1) === 'manage-product')
-        Quản lý sản phẩm
-        @elseif(Request::segment(1) === 'brand-tag')
-        Tag thương hiệu
-        {{-- @elseif(Request::segment(1) === 'dashboard') --}}
-        
-        @endif
-          - 141Fruit Admin
-     </title> 
-     <link rel="shortcut icon" href="{{asset('public/media/img-icons/renewable.png')}}">
+    <!---------Seo--------->
+    <meta name="description" content="Quản lý cửa hàng online 141Fruits !">
+    <meta name="keywords" content="141Fruits Login Admin, TraiCay141 Admin, 141 Login Admin"/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <link  rel="canonical" href="{{url()->current()}}" />
+    <meta name="author" content="Trái Cây 141">
+    <link  rel="icon" type="image/x-icon" href="{{asset('public/media/img-icons/renewable.png')}}" />
+    
+    <meta property="og:image" content="{{asset('public/media/img-admin/admin.png')}}" />  
+    <meta property="og:site_name" content="http://141Fruits.com/dashboard" />
+    <meta property="og:description" content="Quản lý cửa hàng online 141Fruits !" />
+    <meta property="og:title" content="{{$title_web}} - 141Fruit Admin" />
+    <meta property="og:url" content="{{url()->current()}}" />
+    <meta property="og:type" content="website" />
+    <!--//-------Seo--------->
+
+    
+    <link rel="shortcut icon" href="{{asset('public/media/img-icons/renewable.png')}}">
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('public/admin/vendor/fontawesome-free/css/all.css')}}" rel="stylesheet" type="text/css">
@@ -42,6 +47,9 @@
 
     <!-- sweetalert2-->
     <script src="{{asset('public/admin/vendor/sweetalert2/sweetalert2.all.min.js')}}"></script>
+
+    <script src="{{asset('public/customer/js/ajax/jquery.min.js')}}">
+    </script>
 
     
 </head>
@@ -81,7 +89,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item {{ Request::segment(1) === 'bill-online' ? 'active' : null }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSell"
                     aria-expanded="true" aria-controls="collapseSell">
                     <i class="fab fa-opencart"></i>
@@ -90,8 +98,9 @@
                 <div id="collapseSell" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kênh online</h6>
-                        <a class="collapse-item" href="buttons.html">Đơn Hàng Mới</a>
-                        <a class="collapse-item" href="cards.html">Đã Chốt</a>
+                        <a class="collapse-item {{ (Request::segment(1) === 'bill-online')&(Request::segment(2) === 'new') ? 'active' : null }}" href="{{URL::to('/bill-online/new')}}">Đơn Hàng Mới</a>
+                        <a class="collapse-item {{ (Request::segment(1) === 'bill-online')&(Request::segment(2) === 'old') ? 'active' : null }}" href="{{URL::to('/bill-online/old')}}">Đã Chốt</a>
+                        <a class="collapse-item {{ (Request::segment(1) === 'bill-online')&(Request::segment(2) === 'delete') ? 'active' : null }}" href="{{URL::to('/bill-online/delete')}}">Đã Hủy</a>
                     </div>
                 </div>
             </li>
@@ -133,14 +142,14 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Chương trình :</h6>
-                        <a title="Mã khuyến mãi ( giftcode )" class="collapse-item" href="#">Mã khuyến mãi</a>
-                        <a title="Phiếu quà tặng ( Vouchers )" class="collapse-item" href="#">Vouchers</a>
+                        <a title="Mã khuyến mãi ( giftcode )" class="collapse-item" href="">Mã khuyến mãi</a>
+                        <a title="Phiếu quà tặng ( Vouchers )" class="collapse-item" href="">Vouchers</a>
                     </div>
                 </div>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item {{ Request::segment(1) === 'tool' ? 'active' : null }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_product_tooll_menu"
                     aria-expanded="true" aria-controls="collapse_product_tooll_menu">
                     <i class="fas fa-tools"></i>
@@ -150,7 +159,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Tùy chỉnh :</h6>
-                        <a title="Đơn vị tính ( giftcode )" class="collapse-item" href="#">Đơn vị tính</a>
+                        <a title="Đơn vị tính ( giftcode )" class="collapse-item {{ Request::segment(1) === 'tool' ? 'active' : null }}" href="{{URL::to('/tool/unit')}}">Đơn vị tính</a>
                     </div>
                 </div>
             </li>
@@ -173,10 +182,10 @@
                 <div id="collapsePost" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Danh mục bài viết:</h6>
-                        <a class="collapse-item" href="login.html">Viết bài mới</a>
-                        <a class="collapse-item" href="register.html">Danh sách bài viết</a>
-                        <a class="collapse-item" href="forgot-password.html">Nháp</a>
-                        <a class="collapse-item" href="forgot-password.html">Mẫu</a>
+                        <a class="collapse-item" href="">Viết bài mới</a>
+                        <a class="collapse-item" href="">Danh sách bài viết</a>
+                        <a class="collapse-item" href="">Nháp</a>
+                        <a class="collapse-item" href="">Mẫu</a>
                         {{-- <div class="collapse-divider"></div> --}}
                         {{-- <h6 class="collapse-header">Cài đặt :</h6> --}}
                         {{-- <a class="collapse-item" href="404.html">Loại bài viết</a> --}}
@@ -218,9 +227,9 @@
                 <div id="collapseSettingUser" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Setting :</h6>
-                        <a class="collapse-item" href="login.html">Admin account</a>
-                        <a class="collapse-item" href="login.html">User account</a>
-                        <a class="collapse-item" href="register.html">Setting roles</a>
+                        <a class="collapse-item" href="">Admin account</a>
+                        <a class="collapse-item" href="">User account</a>
+                        <a class="collapse-item" href="">Setting roles</a>
                     </div>
                 </div>
             </li>
@@ -235,8 +244,8 @@
                 <div id="collapseHistoryActivity" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Activity :</h6>
-                        <a class="collapse-item" href="login.html">Admin History</a>
-                        <a class="collapse-item" href="login.html">User History</a>
+                        <a class="collapse-item" href="">Admin History</a>
+                        <a class="collapse-item" href="">User History</a>
                     </div>
                 </div>
             </li>
@@ -354,6 +363,7 @@
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Xem hành động admin</a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Xem hành động khách hàng</a>
+                                <a class="dropdown-item font-weight-bold text-center small text-gray-500" href="#">>> Đánh dấu tất cả đã xem <<</a>
                             </div>
                         </li>
 
@@ -369,7 +379,7 @@
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
                                 <h6 class="dropdown-header">
-                                    Hóa Đơn Mua Hàng Mới
+                                    Có đơn mới nè admin ơi !
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
@@ -383,7 +393,7 @@
                                     </div>
                                 </a>
                                 
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Xem tất cả các đơn hàng</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="{{URL::to('/bill-online/new')}}">Xem tất cả các đơn hàng</a>
                             </div>
                         </li>
 
@@ -398,7 +408,7 @@
                                     echo $name_admin; ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
-                                    src="{{asset('public/media/img-avarta/'.Session::get('admin_avarta'))}}">
+                                    src="{{asset('public/media/img-avatar/'.Session::get('admin_avatar'))}}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -508,6 +518,210 @@
     {{-- <script src="{{asset('public/admin/js/sweetalert2.all.js')}}"></script> --}}
     {{-- <script src="{{asset('public/admin/js/sweetalert.min.js')}}"></script> --}}
     {{-- <script src="{{asset('public/admin/js/popper.min.js')}}"></script> --}}
+
+    {{-- DÙNG CHO CHECK NEW BILL ( CHECK HÓA ĐƠN MỚI ) --}}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.radio-bills-product').click(function(){
+
+                var stt_checked = 1 ;
+                var stt_unchecked = 0;
+                var that = $(this);
+                var this_radio = $(this).data('bills-status-product');
+                var bills_product_id = $(this).data('bills-id-product');
+                var bills_bill_id = $(this).data('bills-bill-id');
+                var input_stock_id = $('#radio_stock_confirmation_'+bills_product_id+'_of_'+bills_bill_id);
+                var input_outstock_id = $('#radio_confirmed_out_of_stock_'+bills_product_id+'_of_'+bills_bill_id);
+                var _token = $('input[name="_token"]').val();
+
+                if (that.prop("checked"))
+                {
+                    if(this_radio === 1)
+                    {
+                        $.ajax({
+                            url: '{{url('/bill-online/update-stock')}}',
+                            method: 'POST',
+                            data:{
+                                bills_product_id:bills_product_id,
+                                bills_bill_id:bills_bill_id,
+                                stt_checked:stt_checked,
+                                _token:_token,
+                            },
+                            success:function(result){
+                                <?php
+                                if (Session::has('admin_id')) {
+                                    ?>
+                                    // input_outstock_id.attr('checked', false);
+                                    input_stock_id.prop("checked", true);
+                                    input_outstock_id.prop("checked", false);
+
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                        // toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: 'Đã chốt sản phẩm này !'
+                                    })
+
+                                    <?php 
+
+                                } else {
+                                    ?>
+                                    window.location.href = "{{url('/administrator')}}";
+                                    <?php
+                                }
+                                ?>
+                            }
+                        });
+                    }
+                    else{
+                        $.ajax({
+                            url: '{{url('/bill-online/update-out-stock')}}',
+                            method: 'POST',
+                            data:{
+                                bills_product_id:bills_product_id,
+                                bills_bill_id:bills_bill_id,
+                                stt_checked:stt_checked,
+                                _token:_token,
+                            },
+                            success:function(result){
+                                <?php
+                                if (Session::has('admin_id')) {
+                                    ?>
+                                    input_outstock_id.prop("checked", true);
+                                    input_stock_id.prop("checked", false);
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                        // toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: 'Thông báo sản phẩm này hết hàng !'
+                                    })
+
+                                    <?php 
+
+                                } else {
+                                    ?>
+                                    window.location.href = "{{url('/administrator')}}";
+                                    <?php
+                                }
+                                ?>
+                            }
+                        });
+                    }
+                    
+                }
+                else{
+                    if(this_radio === 1)
+                    {
+                        $.ajax({
+                            url: '{{url('/bill-online/update-stock')}}',
+                            method: 'POST',
+                            data:{
+                                bills_product_id:bills_product_id,
+                                bills_bill_id:bills_bill_id,
+                                stt_checked:stt_unchecked,
+                                _token:_token,
+                            },
+                            success:function(result){
+                                <?php
+                                if (Session::has('admin_id')) {
+                                    ?>
+
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                                // toast.addEventListener('mouseenter', Swal.stopTimer)
+                                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                            }
+                                        })
+
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: 'Chưa chốt sản phẩm này'
+                                    })
+
+                                    <?php 
+
+                                } else {
+                                    ?>
+                                    window.location.href = "{{url('/administrator')}}";
+                                    <?php
+                                }
+                                ?>
+                            }
+                        });
+                    }
+                    else{
+                        $.ajax({
+                            url: '{{url('/bill-online/update-out-stock')}}',
+                            method: 'POST',
+                            data:{
+                                bills_product_id:bills_product_id,
+                                bills_bill_id:bills_bill_id,
+                                stt_checked:stt_unchecked,
+                                _token:_token,
+                            },
+                            success:function(result){
+                                <?php
+                                if (Session::has('admin_id')) {
+                                    ?>
+
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                                // toast.addEventListener('mouseenter', Swal.stopTimer)
+                                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                            }
+                                        })
+
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: 'Chưa chốt sản phẩm này'
+                                    })
+
+                                    <?php 
+
+                                } else {
+                                    ?>
+                                    window.location.href = "{{url('/administrator')}}";
+                                    <?php
+                                }
+                                ?>
+                            }
+                        });
+                    }
+                    
+                }
+            });
+});
+</script>
 
 </body>
 

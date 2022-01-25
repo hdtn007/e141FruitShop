@@ -21,6 +21,9 @@
     <!-- Custom styles for this template-->
     <link href="{{asset('public/admin/css/main.css')}}" rel="stylesheet">
 
+    <script src="{{asset('public/admin/js/vendor2.js')}}"></script>
+
+
 </head>
 
 <body class="bg-main">
@@ -38,6 +41,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{asset('public/admin/js/sb-admin-2.js')}}"></script>
+    <script src="{{asset('public/admin/js/vendor.js')}}"></script>
 
 </body>
 

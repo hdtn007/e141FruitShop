@@ -218,24 +218,9 @@ Session::put('mess_success', null);
             				<option value="Vỉ"></option>
             			</datalist> --}}
             			<select onchange="auto_change_text_dvt(this)" class="form-control" id="input_add_unit_product" name="input_add_unit_product" required>
-            				<option value="Cặp">Cặp</option>
-            				<option value="Cây">Cây</option>
-            				<option value="Chai">Chai</option>
-            				<option value="gram">gram</option>
-            				<option selected value="Kg">Kg</option>
-            				<option value="Hộp">Hộp</option>
-            				<option value="Lon">Lon</option>
-            				<option value="Gói">Gói</option>
-            				<option value="Giỏ">Giỏ</option>
-            				<option value="Lọ">Lọ</option>
-            				<option value="Lốc">Lốc</option>
-            				<option value="Mâm">Mâm</option>
-            				<option value="Túi">Túi</option>
-            				<option value="Thùng">Thùng</option>
-            				<option value="Trái">Trái</option>
-            				<option value="Tuýp">Tuýp</option>
-            				<option value="Tép">Tép</option>
-            				<option value="Vỉ">Vỉ</option>
+            				@foreach($list_unit as $key_unit => $unit_pro)
+            				<option {{$unit_pro->unit_name === "Kg" ? "selected":""}} value="{{$unit_pro->unit_name}}">{{$unit_pro->unit_name}}</option>
+            				@endforeach
             			</select>
             		</div>
             		<small>Lưu ý : là khối lượng nhỏ nhất có thể bán ra</small>
@@ -446,6 +431,24 @@ Session::put('mess_success', null);
 		            	Từ khóa chưa hợp lệ.
 		            </div>           		
             	</div>
+            	<div class="name-product form-group position-relative">
+            		<small class="text-primary font-weight-bold">Mô tả SEO : </small>
+            		<textarea 
+		            	  type="text" 
+		            	  class="form-control" 
+		            	  name="input_add_desc_seo_product"
+		            	  id="input_add_desc_seo_product"
+		            	  maxlength="255"
+		            	  rows="3"
+		            	  data-mess-err="mess_err_add_desc_seo_product" 
+		            	  placeholder="VD : Tên sản phẩm là loại hoa quả ngon nhất thế giới... "
+		            	  data-role="tagsinput" 
+		            	  ></textarea>
+		          	 <small>Lưu ý : Mô tả ngắn.</small>
+		            <div id="mess_err_add_desc_seo_product" class="invalid-tooltip">
+		            	Mô tả chưa hợp lệ.
+		            </div>           		
+            	</div>
             	<hr>
         	</div>
         	<div class="col-sm-3 info-detail-product p-2">
@@ -508,7 +511,9 @@ Session::put('mess_success', null);
         				minlength="20"
         				placeholder="Mô tả sản phẩm ít nhất 20 ký tự !"
         				required
-        			></textarea>
+        			>💦 Giới thiệu :
+💦 Hướng dẫn sử dụng :
+💦 Hướng dẫn bảo quản :</textarea>
         			<div id="mess_err_add_desc_product position-absolute" class="invalid-tooltip">
 		            	Mổ tả phải trên 20 từ.
 		            </div> 

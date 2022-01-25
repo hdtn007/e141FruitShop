@@ -30,19 +30,18 @@ class BrandProduct extends Controller
     public function index()
     {
         $this->AuthLogin();
-
+        $title_web = "Quản lý thương hiệu, quốc gia, nhà cung cấp";
         $all_country = DB::table('tbl_country')->get();
         $all_brand = DB::table('tbl_brand')->get();
         $all_supplier = DB::table('tbl_supplier')
                         ->orderBy('supplier_code')
                         ->get();
 
-        $manager_data = view('administrator.tag-brand')
+        return view('administrator.tag-brand')
                         ->with('list_brand',$all_brand)
                         ->with('list_supplier',$all_supplier)
-                        ->with('list_country',$all_country);
-
-       return view('admin-layout')->with('administrator.tag-brand',$manager_data);
+                        ->with('list_country',$all_country)
+                        ->with('title_web',$title_web);
     }
 
     public function Add_Country(Request $request)
@@ -78,7 +77,7 @@ class BrandProduct extends Controller
             elseif($input_file_img->isValid())
             {
                 $get_full_name_file = $input_file_img->getClientOriginalName();
-                $get_name_file = current(explode('.',$get_full_name_file));
+                $get_name_file = current(explode('.'.$input_file_img->getClientOriginalExtension(),$get_full_name_file));
 
                 $new_name_img = 'img_141_'.$get_name_file.'_country_ensign_'.time().'.'.$input_file_img->getClientOriginalExtension();
 

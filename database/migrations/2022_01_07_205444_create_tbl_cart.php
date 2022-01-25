@@ -16,9 +16,9 @@ class CreateTblCart extends Migration
         Schema::create('tbl_cart', function (Blueprint $table) {
             // $table->id();
             $table->increments('cart_id');
-            $table->integer('cart_customer_id');
+            $table->integer('cart_customer_id')->nullable();
             $table->integer('cart_product_id');
-            $table->integer('cart_quantily_product')->default(1);
+            $table->integer('cart_quantity_product')->default(1);
             $table->integer('cart_status_product')->default(1);
             $table->ipAddress('user_ip_address')->nullable();
             $table->timestamps();

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>TraiCay141 - Nhà phân phối trái cây, trái cây nhập khẩu cao cấp | Hệ thống cửa hàng Trái Cây 141 Tp.HCM </title>
     <link href="{{asset('public/customer/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/customer/css/font-awesome.min.css')}}" rel="stylesheet">
@@ -22,6 +23,10 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+ 		<script src="{{asset('public/customer/js/ajax/jquery.min.js')}}">
+    </script>
+    <!-- sweetalert2-->
+    <script src="{{asset('public/admin/vendor/sweetalert2/sweetalert2.all.min.js')}}"></script>
 </head><!--/head-->
 
 <body>
@@ -71,11 +76,41 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="#"><i class="fa fa-user"></i> Tài khoản</a></li>
+								@if(Session::has('user_id'))
 								<li><a href="#"><i class="fa fa-heart"></i> Yêu thích</a></li>
+								
 								<li><a href="#" style="color:#CA6229;"><img src="{{asset('public/media/img-icons/money.png')}}" alt="" /> 0 xu</a></li>
+								
 								<li><a href="{{URL::to('/cart')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
-								<li><a href="{{URL::to('/login')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+
+								<li class="dropdown" title="{{Session::get('user_name')}}">
+									<a href="#">
+										<img src="{{asset('public/media/img-avatar/customer/'.Session::get('user_avatar'))}}" alt="avt" /> 
+											<script type="text/javascript">
+												var fullname = "{{Session::get('user_name')}}";
+												var firstName = fullname.split(' ').slice(0, -1).join(' ');
+												var lastName = fullname.split(' ').slice(-1).join(' ');
+
+												document.write(lastName);
+												if(lastName == "" || lastName == null || lastName == " ")
+												{
+													document.write(firstName);
+												}
+											</script>
+									</a>
+									<ul style="background: #fff; width: 100%; padding: 2px 2px 2px 2px;" role="menu" class="sub-menu">
+										<a href="{{URL::to('/logout-user')}}">Đăng Xuất</a>
+									</ul>
+								</li>
+								
+								@endif
+								@if(!Session::has('user_id'))
+								<li>
+									<a href="{{URL::to('/login')}}">
+										<i class="fa fa-lock"></i> Đăng nhập
+									</a>
+								</li>
+								@endif
 							</ul>
 						</div>
 					</div>
@@ -102,9 +137,11 @@
                     <ul role="menu" class="sub-menu">
                         <li><a class="{{ Request::segment(2) === 'all_fruits' ? 'active' : null }}" href="{{URL::to('/store/all_fruits')}}">141Fruit</a></li>
                         <li><a class="{{ Request::segment(2) === 'all_foods' ? 'active' : null }}" href="{{URL::to('/store/all_foods')}}">141Food</a></li>
-                    </ul></li>
-								<li class="dropdown"><a href="{{URL::to('/home')}}"><i class="fa fa-coffee"></i> Mẹo</a></li>
-								<li class="dropdown"><a href="{{URL::to('/home')}}"><i class="fa fa-comments"></i> Liên Hệ</a></li>
+                    </ul>
+                 </li>
+								<li class="dropdown hide {{ Request::segment(1) === 'facts' ? 'shadow-sm' : null }}"><a href="{{URL::to('/facts')}}"><i class="fa fa-coffee"></i> Mẹo</a></li>
+								{{-- <li class="dropdown {{ Request::segment(1) === 'contact' ? 'shadow-sm' : null }}"><a href="{{URL::to('/contact')}}"><i class="fa fa-comments"></i> Mua Trực Tiếp</a></li> --}}
+								<li class="dropdown"><a target="_blank" href="https://www.facebook.com/messages/t/401243830685345"><i class="fa fa-comments"></i> Mua Trực Tiếp</a></li>
 							</ul>
 						</div>
 					</div>
@@ -264,11 +301,207 @@
 
 
 
-    <script src="{{asset('public/customer/js/jquery.js')}}"></script>
+	<script src="{{asset('public/customer/js/jquery.js')}}"></script>
 	<script src="{{asset('public/customer/js/bootstrap.min.js')}}"></script>
 	<script src="{{asset('public/customer/js/jquery.scrollUp.min.js')}}"></script>
 	<script src="{{asset('public/customer/js/price-range.js')}}"></script>
-    <script src="{{asset('public/customer/js/jquery.prettyPhoto.js')}}"></script>
-    <script src="{{asset('public/customer/js/main.js')}}"></script>
+	<script src="{{asset('public/customer/js/jquery.prettyPhoto.js')}}"></script>
+	<script src="{{asset('public/customer/js/main.js')}}"></script>
+
+{{-- DÙNG CHO ADD TO CART DANH SÁCH MẶT HÀNG --}}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.add-to-cart').click(function(){
+				var product_id = $(this).data('id-product');
+				var cart_quantity_product = 1;
+				var _token = $('input[name="_token"]').val();
+
+				if (true)
+				{
+					$.ajax({
+						url: '{{url('/cart/add')}}',
+						method: 'POST',
+						data:{
+							cart_product_id:product_id,
+							cart_quantity_product:cart_quantity_product,
+							_token:_token,
+						},
+						success:function(data){
+							<?php
+								if (Session::has('user_id')) {
+							?>
+								Swal.fire(
+									'Thành công',
+									'Sản phẩm đã được thêm vào giỏ hàng!',
+									'success'
+									);
+							<?php 
+
+								} else {
+							?>
+									 window.location.href = "{{url('login')}}";
+							<?php
+								}
+							?>
+							}
+					});
+				}
+			});
+		});
+	</script>
+
+{{-- DÙNG CHO ADD TO CART CHI TIẾT SẢN PHẨM --}}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.add-to-cart-detail').click(function(){
+				var product_id = $(this).data('id-product');
+				var cart_quantity_product = $('#input_quantity_cart').val();
+				var _token = $('input[name="_token"]').val();
+
+				if (true)
+				{
+					$.ajax({
+						url: '{{url('/cart/add')}}',
+						method: 'POST',
+						data:{
+							cart_product_id:product_id,
+							cart_quantity_product:cart_quantity_product,
+							_token:_token,
+						},
+						success:function(data){
+							<?php
+								if (Session::has('user_id')) {
+							?>
+								Swal.fire(
+									'Thành công',
+									'Sản phẩm đã được thêm vào giỏ hàng!',
+									'success'
+									);
+							<?php 
+
+								} else {
+							?>
+									 window.location.href = "{{url('login')}}";
+							<?php
+								}
+							?>
+						}
+					});
+				}
+			});
+		});
+	</script>
+
+	{{-- DÙNG CHO ADD TO LIKE LIST ( SẢN PHẨM YÊU THÍCH) --}}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.product-like').click(function(){
+				var product_id = $(this).data('id-product');
+				var stt_like = $(this).data('like');
+				var _token = $('input[name="_token"]').val();
+
+				var get_like_count = $(this).data('count-like');
+				var count = document.getElementById(get_like_count);
+
+				if (stt_like === 0)
+				{
+					$(this).addClass('btn btn-default product-like product-liked');
+					count.innerHTML = parseInt(count.innerHTML) + 1;
+					$(this).data('like', 1);
+
+				}
+				else {
+					$(this).removeClass('product-liked')
+					count.innerHTML = parseInt(count.innerHTML) - 1;
+					$(this).data('like', 0);
+				}
+
+				if (stt_like === 0)
+				{
+					$.ajax({
+						url: '{{url('/product-like/add')}}',
+						method: 'POST',
+						data:{
+							product_id:product_id,
+							_token:_token,
+						},
+						success:function(result){
+							<?php
+							if (Session::has('user_id')) {
+								?>
+
+								const Toast = Swal.mixin({
+									toast: true,
+									position: 'top-end',
+									showConfirmButton: false,
+									timer: 1500,
+									timerProgressBar: true,
+									didOpen: (toast) => {
+										// toast.addEventListener('mouseenter', Swal.stopTimer)
+										toast.addEventListener('mouseleave', Swal.resumeTimer)
+									}
+								})
+
+								Toast.fire({
+									icon: 'success',
+									title: 'Đã thêm vào yêu thích'
+								})
+
+								<?php 
+
+							} else {
+								?>
+								window.location.href = "{{url('login')}}";
+								<?php
+							}
+							?>
+						}
+					});
+				}
+				else{
+							$.ajax({
+								url: '{{url('/product-like/remove')}}',
+								method: 'POST',
+								data:{
+									product_id:product_id,
+									_token:_token,
+								},
+								success:function(result){
+									<?php
+									if (Session::has('user_id')) {
+										?>
+
+										const Toast = Swal.mixin({
+											toast: true,
+											position: 'top-end',
+											showConfirmButton: false,
+											timer: 1500,
+											timerProgressBar: true,
+											didOpen: (toast) => {
+												// toast.addEventListener('mouseenter', Swal.stopTimer)
+												toast.addEventListener('mouseleave', Swal.resumeTimer)
+											}
+										})
+
+										Toast.fire({
+											icon: 'error',
+											title: 'Đã bỏ thích sản phẩm'
+										})
+
+										<?php 
+
+									} else {
+										?>
+										window.location.href = "{{url('login')}}";
+										<?php
+									}
+									?>
+								}
+							});
+				}
+			});
+		});
+	</script>
+
 </body>
 </html>

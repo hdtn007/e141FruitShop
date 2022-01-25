@@ -25,7 +25,8 @@ class CategoryProduct extends Controller
     public function index() // hiển thị danh sách danh mục
     {
         $this->AuthLogin();
-        // truy vấn danh mục chính
+        
+        $title_web = "Quản lý danh mục sản phẩm";
         $all_category_product = DB::table('tbl_category_product')
                                 ->join('tbl_admin', 
                                        'tbl_category_product.category_author', 
@@ -33,10 +34,9 @@ class CategoryProduct extends Controller
                                        'tbl_admin.admin_id')
                                 ->select('tbl_category_product.*', 'tbl_admin.admin_name')
                                 ->get();
-        $manager_category_product = view('administrator.category-product')
-                                    ->with('list_category_product',$all_category_product);
-
-       return view('admin-layout')->with('administrator.category-product',$manager_category_product); 
+        return view('administrator.category-product')
+                                    ->with('list_category_product',$all_category_product)
+                                    ->with('title_web',$title_web);
     }
 
     public function saveAddCategoryMain(Request $request) // lưu danh mục chính

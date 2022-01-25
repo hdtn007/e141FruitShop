@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File; // Xóa file cần có
 use Illuminate\Support\Facades\Validator; // bẫy lỗi upload file
 use Illuminate\Support\Facades\Redirect; // trả về kết quả thành công hoặc thất bại
 use App\Http\Requests;
+use Carbon\Carbon; // sử dụng thời gian
 use DB; //  thư viện database để sử dụng thao tác với database
 use Session; // thư viện Session để lưu trử thông tin đăng nhập trên session 
 session_start(); // khi có sử dụng sesstion phải khai báo
@@ -29,6 +30,7 @@ class Product extends Controller
     {
         $this->AuthLogin();
 
+        $title_web = "Tất cả các sản phẩm";
         $all_product = DB::table('tbl_product')
                         ->join('tbl_admin', 
                          'tbl_product.product_author_id', 
@@ -36,7 +38,7 @@ class Product extends Controller
                          'tbl_admin.admin_id')
                         ->select('tbl_product.*', 'tbl_admin.admin_name')
                         ->orderBy('tbl_product.product_name')
-                        ->get();
+                        ->paginate(100)->withQueryString();
 
         $count_product = DB::table('tbl_product')
                          ->where('product_inventory')
@@ -50,13 +52,12 @@ class Product extends Controller
                                 ->count();
 
 
-        $manager_data = view('administrator.manage-product')
+        return view('administrator.manage-product')
                         ->with('list_product',$all_product)
                         ->with('count_pro',$count_product)
                         ->with('count_over_pro',$count_over_out_pro)
-                        ->with('count_coming_pro',$count_coming_out_pro);
-
-       return view('admin-layout')->with('administrator.manage-product',$manager_data);
+                        ->with('count_coming_pro',$count_coming_out_pro)
+                        ->with('title_web',$title_web);
     }
 
     public function list_other()
@@ -69,6 +70,7 @@ class Product extends Controller
     {
         $this->AuthLogin();
 
+        $title_web = "Chi tiết sản phẩm";
         $list_product = DB::table('tbl_product')
                         ->orderBy('product_id')
                         ->get();
@@ -100,37 +102,38 @@ class Product extends Controller
                                 'tbl_country.country_name')
                        ->where('tbl_product.product_code',$code_product)
                        ->first();
-        $manager_data = view('administrator.product.detail-product')
+        return view('administrator.product.detail-product')
                         ->with('detail_pro',$detail_data)
                         ->with('list_product',$list_product)
-                        ->with('get_brand',$getBrand);
-
-        return view('admin-layout')->with('administrator.product.detail-product',$manager_data);
+                        ->with('get_brand',$getBrand)
+                        ->with('title_web',$title_web);
     }
 
     public function show_add()
     {
         $this->AuthLogin();
-
+        $title_web = "Thêm sản phẩm mới";
         $all_category_product = DB::table('tbl_category_product')->get();
         $all_country = DB::table('tbl_country')->get();
         $all_brand = DB::table('tbl_brand')->get();
+        $all_unit = DB::table('tbl_unit')->get();
 
-        $manager_data = view('administrator.product.add-product')
+        return view('administrator.product.add-product')
                         ->with('list_category_product', $all_category_product)
                         ->with('list_country', $all_country)
-                        ->with('list_brand', $all_brand);
-        
-        return view('admin-layout')->with('administrator.product.add-product',$manager_data);
+                        ->with('list_unit', $all_unit)
+                        ->with('list_brand', $all_brand)
+                        ->with('title_web',$title_web);
     }
 
     public function show_edit($code_product)
     {
         $this->AuthLogin();
-
+        $title_web = "Cập nhật sản phẩm";
         $all_category_product = DB::table('tbl_category_product')->get();
         $all_country = DB::table('tbl_country')->get();
         $all_brand = DB::table('tbl_brand')->get();
+        $all_unit = DB::table('tbl_unit')->get();
 
         $list_product = DB::table('tbl_product')
                         ->orderBy('product_id')
@@ -156,14 +159,14 @@ class Product extends Controller
                        ->where('product_code',$code_product)
                        ->first();
 
-        $manager_data = view('administrator.product.update-product')
+        return view('administrator.product.update-product')
                         ->with('detail_pro',$detail_data)
                         ->with('list_product',$list_product)
                         ->with('list_category_product', $all_category_product)
                         ->with('list_country', $all_country)
-                        ->with('list_brand', $all_brand);
-
-        return view('admin-layout')->with('administrator.product.update-product',$manager_data);
+                        ->with('list_unit', $all_unit)
+                        ->with('list_brand', $all_brand)
+                        ->with('title_web',$title_web);
     }
 
     public function save_new_product(Request $request)
@@ -180,9 +183,11 @@ class Product extends Controller
         $data['product_category_id'] = $request->input_add_category_product;    
         $data['product_author_id'] = Session::get('admin_id');
         $data['product_desc'] = $request->input_add_desc_product;
+        $data['product_short_desc'] = $request->input_add_desc_seo_product;
         $data['product_import_price'] = $request->input_add_import_price_product;
         $data['product_sell_price'] = $request->input_add_sell_price_product;
         $data['product_keywords'] = $request->input_add_keywords_product;
+        $data['product_created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
 
         // xử lý trạng thái của sản phẩm
         if (isset($request->input_add_status_product)) {
@@ -413,6 +418,7 @@ class Product extends Controller
         $data['product_category_id'] = $request->input_update_category_product;    
         $data['product_author_id'] = Session::get('admin_id');
         $data['product_desc'] = $request->input_update_desc_product;
+        $data['product_short_desc'] = $request->input_update_desc_seo_product;
         $data['product_import_price'] = $request->input_update_import_price_product;
         $data['product_sell_price'] = $request->input_update_sell_price_product;
         $data['product_keywords'] = $request->input_update_keywords_product;

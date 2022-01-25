@@ -120,3 +120,28 @@ function auto_check_input_null(input_text)
     if(input_text.value==''||input_text.value==null)
         {input_text.value = '1'}
 }
+
+
+// setInterval(function(){
+// })
+
+
+// Get IP Address
+/*
+window.onload = function()
+{
+$.getJSON("https://api.ipify.org?format=json", function(data) {
+       		 sessionStorage.setItem("ip_address", data.ip);
+     	 });
+};
+*/
+
+/* modal */
+$('#quantity_update_modal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var recipient = button.data('whatever') 
+  var recipientID = button.data('cart-id') 
+  var modal = $(this)
+  modal.find('.modal-body input').val(recipient)
+  modal.find('.modal-body #input_cart_id_quantity_product_update').val(recipientID)
+})

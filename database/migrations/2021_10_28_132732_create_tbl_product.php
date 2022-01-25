@@ -26,6 +26,7 @@ class CreateTblProduct extends Migration
             $table->integer('product_brand_id')->nullable();    // thương hiệu
             $table->integer('product_author_id');               // người thêm sản phẩm
             $table->text('product_desc')->nullable();           // mô tả sp
+            $table->text('product_short_desc')->nullable();           // mô tả ngắn SEO
             $table->integer('product_status')->default(1);      // trạng thái hoạt động
             $table->integer('product_like')->default(0);        // lượt thích sp
             $table->integer('product_import_price')->default(0);// giá nhập
@@ -33,6 +34,7 @@ class CreateTblProduct extends Migration
             $table->integer('product_sale_status')->default(0); // trạng thái khuyến mãi
             $table->integer('product_sale_price')->default(0);  // giá khuyến mãi
             $table->integer('product_inventory')->default(0);   // Tồn kho
+            $table->integer('product_total_purchased')->default(0); // đã mua
             $table->integer('product_count_product_sold')->default(0); // đã bán
             $table->integer('product_view')->default(0);        // lượt xem
             $table->string('product_url');                      // đường dẫn đến sp
@@ -43,6 +45,7 @@ class CreateTblProduct extends Migration
             $table->string('product_img3')->nullable();         // ảnh minh họa
             $table->string('product_img4')->nullable();         // ảnh minh họa
             $table->string('product_img5')->nullable();         // ảnh minh họa
+            $table->dateTime('product_created_at')->nullable();         // ngày tạo
             $table->timestamps();
         });
     }

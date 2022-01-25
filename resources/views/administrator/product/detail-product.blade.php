@@ -226,7 +226,7 @@
         		<small>Tạo bởi : {{$detail_pro->admin_name}}</small>
         	</div>
         	<div class="mt-2">
-        		<small>Tạo ngày : {{date('d/m/Y', strtotime($detail_pro->created_at))}}</small> 
+        		<small>Tạo ngày : {{date('d/m/Y', strtotime($detail_pro->product_created_at))}}</small> 
 
         	</div>
         </div>

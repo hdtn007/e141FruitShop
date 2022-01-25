@@ -26,7 +26,7 @@
 		<span class="text-danger p-2 font-weight-bold border-left border-danger">
 			<i class="fas fa-exclamation-circle mx-1"></i>
 			Cảnh báo : <span class="font-weight-bold">Có {{$count_over_pro}} sản phẩm trong kho đã hết hàng !</span>
-			<a class="text-decoration-none" href="{{URL::to('/manage-product/list-inventory')}}#tonkho"><u>Xem ngay !!!</u></a>
+			<a class="text-decoration-none" {{-- href="{{URL::to('/manage-product/list-inventory')}}#tonkho" --}}><u>Xem ngay !!!</u></a>
 		</span>
 		<div class="spinner-grow text-danger" role="status">
 			<span class="sr-only">Loading...</span>
@@ -38,7 +38,7 @@
 		<span class="text-warning p-2 font-weight-bold border-left border-warning">
 			<i class="fas fa-exclamation-triangle mx-1"></i>
 			Cảnh báo : <span class="font-weight-bold">Có {{$count_coming_pro}} sản phẩm trong kho sắp hết !</span>
-			<a class="text-decoration-none" href="{{URL::to('/manage-product/list-inventory')}}#tonkho"><u>Xem ngay !!!</u></a>
+			<a class="text-decoration-none" {{-- href="{{URL::to('/manage-product/list-inventory')}}#tonkho" --}}><u>Xem ngay !!!</u></a>
 		</span>
 		<div class="spinner-grow text-warning" role="status">
 			<span class="sr-only">Loading...</span>
@@ -50,7 +50,7 @@
 		<span class="text-danger p-2 font-weight-bold border-left border-danger">
 			<i class="fas fa-calendar-times mx-1"></i>
 			Cảnh báo : <span class="font-weight-bold">Có 1 sản phẩm hết hạn sử dụng !</span>
-			<a class="text-decoration-none" href="{{URL::to('/manage-product/list-out-of-date')}}#hansudung"><u>Xem ngay !!!</u></a>
+			<a class="text-decoration-none" {{-- href="{{URL::to('/manage-product/list-out-of-date')}}#hansudung" --}}><u>Xem ngay !!!</u></a>
 		</span>
 		<div class="spinner-grow text-danger" role="status">
 			<span class="sr-only">Loading...</span>
@@ -62,7 +62,7 @@
 		<span class="text-warning p-2 font-weight-bold border-left border-warning">
 			<i class="fas fa-hourglass-half mx-1"></i>
 			Cảnh báo : <span class="font-weight-bold">Có 1 sản phẩm sắp hết hạn sử dụng !</span>
-			<a href="{{URL::to('/manage-product/list-out-of-date')}}#hansudung"><u>Xem ngay !!!</u></a>
+			<a {{-- href="{{URL::to('/manage-product/list-out-of-date')}}#hansudung" --}}><u>Xem ngay !!!</u></a>
 		</span>
 		<div class="spinner-grow text-warning" role="status">
 			<span class="sr-only">Loading...</span>
@@ -204,11 +204,7 @@
 		</div>
 		<nav aria-label="Page navigation example">
 		  <ul class="pagination justify-content-center">
-		    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-		    <li class="page-item"><a class="page-link" href="#">1</a></li>
-		    <li class="page-item"><a class="page-link" href="#">2</a></li>
-		    <li class="page-item"><a class="page-link" href="#">3</a></li>
-		    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+		    {{ $list_product->links('pagination::Bootstrap-4') }}
 		  </ul>
 		</nav>
 	</div>

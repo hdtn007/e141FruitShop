@@ -95,13 +95,14 @@
           </h2>
           <?php $sum_pro = 0; ?>
           @foreach($list_pro as $key_pro => $pro_pro)
-
+        <form>
+        @csrf
           <div class="col-sm-4">
             <div class="product-image-wrapper">
               <div class="single-products">
                 <div class="productinfo text-center">
                   <a href="{{URL::to('/meta_product='.$pro_pro->product_url)}}">
-                  <img src="{{asset('public/media/img-product/'.$pro_pro->product_img1)}}" alt="" />
+                  <img class="img-lg" src="{{asset('public/media/img-product/'.$pro_pro->product_img1)}}" alt="" />
                   </a>
                   <!-- nếu có giảm giá sản phẩm thì hiển thị line-through -->
                   <h2>
@@ -124,11 +125,26 @@
                     <p style="height: 3.5rem;">{{$pro_pro->product_name}}</p>
                     <div>
                       <ul class="nav nav-pills nav-justified">
-                        <li title="Yêu thích"><center>
-                          <a class="btn btn-default product-like product-liked">
-                            <i class="fa fa-heart"></i>
-                          </a></center></li>
-                          <li title="Thêm vào giỏ hàng"><center><a class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i></a></center>
+                        <li title="Yêu thích">
+                          <center>
+                            @php $i2 = 0; @endphp
+                            @foreach($all_like as $key_all_like => $pro_like)
+                            @if($pro_like->like_pro_product_id == $pro_pro->product_id)
+                            @php $i2 = 1; @endphp
+                            @endif
+                            @endforeach
+                            @if($i2 == 1)
+                            <a data-like="1" data-count-like="count_like_{{$pro_pro->product_id}}" data-id-product="{{$pro_pro->product_id}}" class="btn btn-default product-like product-liked">
+                              <i class="fa fa-heart"></i>
+                            </a>
+                            @else
+                            <a data-like="0" data-count-like="count_like_{{$pro_pro->product_id}}" data-id-product="{{$pro_pro->product_id}}" class="btn btn-default product-like">
+                              <i class="fa fa-heart"></i>
+                            </a>
+                            @endif
+                          </center>
+                        </li>
+                          <li title="Thêm vào giỏ hàng"><center><a data-id-product="{{$pro_pro->product_id}}" class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i></a></center>
                           </li>
                         </ul>
                       </div>
@@ -143,12 +159,26 @@
                           <p title="{{$pro_pro->product_name}}">{{$pro_pro->product_name}}</p>
                           <div>
                             <ul class="nav nav-pills nav-justified">
-                              <li title="Yêu thích"><center> 
-                                <a class="btn btn-default product-like product-liked">
-                                  <i class="fa fa-heart"></i>
-                                </a></center>
+                              <li title="Yêu thích">
+                                <center> 
+                                @php $i3 = 0; @endphp
+                                  @foreach($all_like as $key_all_like => $pro_like)
+                                  @if($pro_like->like_pro_product_id == $pro_pro->product_id)
+                                  @php $i3 = 1; @endphp
+                                  @endif
+                                  @endforeach
+                                  @if($i3 == 1)
+                                  <a data-like="1" data-count-like="count_like_{{$pro_pro->product_id}}" data-id-product="{{$pro_pro->product_id}}" class="btn btn-default product-like product-liked">
+                                    <i class="fa fa-heart"></i>
+                                  </a>
+                                  @else
+                                  <a data-like="0" data-count-like="count_like_{{$pro_pro->product_id}}" data-id-product="{{$pro_pro->product_id}}" class="btn btn-default product-like">
+                                    <i class="fa fa-heart"></i>
+                                  </a>
+                                  @endif
+                              </center>
                               </li>
-                              <li title="Thêm vào giỏ hàng"><center><a class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i></a></center>
+                              <li title="Thêm vào giỏ hàng"><center><a data-id-product="{{$pro_pro->product_id}}" class="btn btn-default add-to-cart"><i class="glyphicon glyphicon-plus"></i></a></center>
                               </li>
                             </ul>
                           </div>
@@ -162,7 +192,12 @@
               </div>
               <div class="choose">
                 <ul class="nav nav-pills nav-justified">
-                  <li title="0 lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;"><a class="count-like">{{$pro_pro->product_like}} <img src="{{asset('public/media/img-icons/heart.png')}}" alt="img_like" /></a>
+                  <li title="{{$pro_pro->product_like}} lượt yêu thích" style="border-right: 0.5px solid #F9F9F9;">
+                    <a class="count-like">
+                      <span id="count_like_{{$pro_pro->product_id}}">{{$pro_pro->product_like}}
+                      </span>
+                      <img src="{{asset('public/media/img-icons/heart.png')}}" alt="img_like" />
+                    </a>
                   </li>
                   <li title="Xem chi tiết sản phẩm">
                     <a href="{{URL::to('/meta_product='.$pro_pro->product_url)}}"><i class="fa fa-plus-square"></i>Chi tiết sản phẩm
@@ -172,7 +207,7 @@
               </div>
             </div>
           </div>
-
+        </form>
           <?php $sum_pro = $sum_pro + 1; ?>
           @endforeach
           <?php if($sum_pro == 0){ ?>
@@ -180,12 +215,13 @@
             <span>Chưa có sản phẩm ở danh mục này!</span>
           </div>
           <?php }else{ ?>
+
+          
+
           <ul class="pagination col-sm-12">
-            <li class="active"><a href="">1</a></li>
-            <li><a href="">2</a></li>
-            <li><a href="">3</a></li>
-            <li><a href="">&raquo;</a></li>
+            <li>{{ $list_pro->links() }}</li>
           </ul>
+
           <?php } ?>
         </div><!--features_items-->
       </div>
