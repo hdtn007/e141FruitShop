@@ -124,8 +124,8 @@
 									elseif($diffTimeSeconds < 60*60*24*30){
 										echo floor(($diffTimeDays)).'ngày'.floor($Hours).'giờ trước';
 									}
-									elseif($diffTimeSeconds < 60*60*24*30*365){
-										echo floor(($diffTimeMonths)).'tháng'.floor($MonthsDays).'trước';
+									elseif($diffTimeSeconds < 60*60*24*30*12){
+										echo floor(($diffTimeMonths)).'tháng'.floor($MonthsDays).'ngày trước';
 									}
 									else{
 										echo floor(($diffTimeYears)).'năm'.floor($Days).'ngày trước';
